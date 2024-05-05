@@ -4,7 +4,7 @@ public class Coordinates {
     private float x;
     private Float y;
     public Coordinates(float x, Float y){
-        this.x= x;
+        this.x = x;
         this.y = y;
     }
 

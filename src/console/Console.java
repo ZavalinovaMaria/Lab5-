@@ -15,6 +15,7 @@ import java.util.*;
     /* A field that refers to a HashMap with keys - command names and the possibility of calling them
      */
         Map<String, Command> commands = new HashMap<>();
+    public static ArrayList<Integer> keyStoragee= new ArrayList<>();
 
         /**
          * The starting point of the program. A method in which a database file is specified, commands are specified, and commands are entered.
@@ -36,6 +37,8 @@ import java.util.*;
             }
             FileReader reader = new FileReader();
             FileWriter writer = new FileWriter();
+            keyStoragee = new ArrayList<>();
+            keyStoragee.addAll(reader.read(path).keySet());
             TicketCollection collection = new TicketCollection(reader.read(path));
             CommandCatalog commandCatalog = new CommandCatalog(collection, reader, writer, commands);
 
@@ -81,4 +84,4 @@ import java.util.*;
             }
         }
     }
-}
+

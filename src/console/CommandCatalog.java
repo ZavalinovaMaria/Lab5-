@@ -2,25 +2,19 @@ package console;
 import Command.*;
 import fileWork.FileReader;
 import subjects.*;
+import subjects.Сomporators.ComparatorDiscount;
+import subjects.Сomporators.ComparatorPrice;
 
 import java.io.FileWriter;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
+
+
 
 public class CommandCatalog {
     private final FileReader reader;
     private final FileWriter writer;
-    /* клсс для обработки команд пользователя
-    const jsonString ="{ ffffff}';
-    const person = JSON.parse(jsonString);
+    private final Inserting insert;
 
-/* ЭТО НАШ АНАЛОГ МЭНЭДЖЕРА
-ЕСЛИ ВКРАТЦЕ ТО ЭТО  К ЧЕМУ МЫ МОЖЕМ ПРИМЕНЯТЬ МЕТОДЫ
-
-ЗДЕСЬ В КАЧЕСТВЕ МЕТОДОВ БУДУТ ВСЕ КОМАНДЫ КОТОРЫЕ НАМ НУЖНЫ
-     */
 
 
     /**
@@ -44,11 +38,12 @@ public class CommandCatalog {
      */
     private String[] tokens;
 
-    public CommandCatalog(TicketCollection collection, FileReader reader, FileWriter writer, Map<String, Command> commands) {
+    public CommandCatalog(TicketCollection collection, FileReader reader,Inserting insert, FileWriter writer, Map<String, Command> commands) {
         this.collection = collection;
         this.reader = reader;
         this.writer = writer;
         this.commands = commands;
+        this.insert = insert;
     }
 
     public void setTokens(String[] tokens) {
@@ -105,9 +100,23 @@ public class CommandCatalog {
      */
     public void clear() {
         collection.getCollection().clear();
-        collection.updateData();
+        collection.updateCharacteristic();
         System.out.println("Collection cleared");
     }
+
+    public void history() {
+        @Override
+        public void execute(String args) throws InvalidArguments, ExitProgram {
+            if (!args.isBlank()) throw new InvalidArguments();
+            List<String> history = commandManager.getCommandHistory();
+            if (history.isEmpty()){
+                console.println("История команд пуста");
+                return; // завершение метода
+            }
+            for (String command: history.subList(Math.max(history.size() - 9, 0), history.size())){
+                console.println(command);
+
+            }
 
     /**
      * A command that prints to the console all objects in a collection and their fields {@link Command.ShowCommand}
@@ -116,11 +125,42 @@ public class CommandCatalog {
         System.out.println("The collection: ");
         System.out.println(collection.getCollection());
     }
+    public void printFieldDescendingDiscount(){
+        List<Ticket> sortable = new ArrayList<>(collection.getCollection().values());
+        Comparator<Ticket> sortibility = new ComparatorDiscount();
+        Collections.sort(sortable,sortibility);
+        Collections.reverse(sortable);
+        System.out.println("ля ля яля что сделали ");
+        for(Ticket  ticket : sortable){
+            System.out.println(ticket.getPrice());}
+        //может быть вывод красивее
 
+    }
+
+
+    public void removeLower(){
+        double price;
+        List<Ticket> sortable = new ArrayList<>(collection.getCollection().values());
+        Comparator<Ticket> sortibility = new ComparatorPrice();
+        Collections.sort(sortable,sortibility);
+
+
+        System.out.println("ля ля яля что сделали ");
+        for(Ticket  ticket : sortable){
+            System.out.println(ticket.getPrice());}
+                //может быть вывод красивее
+
+            }
+
+
+
+
+
+/*
     /**
      * A command that adds a new object to the collection, created with {@link Filler} class methods
      * {@link Commands.ConcreteCommands.AddCommand}
-     */
+
     public void insert(Integer Key) {
         // if (isScriptWorking) {
         // collection.getCollection().add(Filler.toBuildOrganization(compositeCommand));
@@ -146,11 +186,13 @@ public class CommandCatalog {
 
     /**
      * A command that allows you to insert a new object at a given index in the collection {@link Commands.ConcreteCommands.InsertAnIndexCommand}
+     *
+     * @return
      */
-
+/*
     /**
      * A command that allows you to update an object with a given id {@link Commands.ConcreteCommands.UpdateCommand}
-     */
+
     public void update() {
         try {
             long id;
@@ -178,7 +220,7 @@ public class CommandCatalog {
             return;
         }
         Ticket ticket = collection.getCollection().stream().filter(o -> o.getId() == collection.getLastIdWorkedWith()).findFirst().get();
-        collection.setLastIndexWorkedWith(collection.getCollection().indexOf(org));
+
         collection.getCollection().remove(org);
         if (isScriptWorking) {
             collection.getCollection().add(collection.getLastIndexWorkedWith(), Filler.toBuildOrganization(compositeCommand));
@@ -194,7 +236,10 @@ public class CommandCatalog {
      * A command that creates an object of the {@link ScriptManager} class and starts the script process
      *
      * @see Command.ExecuteScriptCommand
-     */
+
+
+ */
+    /*
     public void executeScript() {
         try {
             File script;
@@ -224,46 +269,16 @@ public class CommandCatalog {
     /**
      * A command that allows you to remove elements smaller than the one specified by id {@link Commands.ConcreteCommands.RemoveLowerCommand}
      */
-    public void removeLower() {
-        try {
-            long id;
-            if (isScriptWorking) {
-                id = Long.parseLong(compositeCommand[0]);
-                clearCompositeCommand();
-            } else {
-                id = Long.parseLong(tokens[1]);
-            }
-            if (id < 0) {
-                throw new ArithmeticException();
-            }
-            if (collection.setLastIdWorkedWith(id) < 0) {
-                System.out.println("Organization with id " + id + " is not exist");
-                return;
-            }
-        } catch (NumberFormatException e) {
-            System.out.println("Id must be integer");
-            return;
-        } catch (ArithmeticException e) {
-            System.out.println("Id cannot be negative");
-            return;
-        } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println("Please, enter the id in the command");
-            return;
-        }
-        Organization organization = collection.getCollection().stream().filter(o -> o.getId() == collection.getLastIdWorkedWith()).findFirst().get();
-        List<Organization> list = collection.getCollection().stream().filter(o -> o.getAnnualTurnover() + o.getEmployeesCount()
-                >= organization.getAnnualTurnover() + organization.getEmployeesCount()).toList();
-        if (list.size() == collection.getCollection().size()) {
-            System.out.println("No one organization was deleted");
-            return;
-        }
-        System.out.println(collection.getCollection().size() - list.size() + " organizations smaller than the specified one were successfully deleted");
-        collection.setList(list);
+
+    public double removeLower() {
+
+
     }
 
+/*
     /**
      * A command that allows you to delete an object by its id {@link Commands.ConcreteCommands.RemoveByIdCommand}
-     */
+
     public void removeKey() {  //ключ
         try {
             long id;
@@ -295,6 +310,28 @@ public class CommandCatalog {
         System.out.println("Organization with id: " + collection.getLastIdWorkedWith() + " was successfully removed");
     }
 
+ */
+    public void insertNull(){
+        Inserting insert = new Inserting();
+        Ticket newTicket =insert.toBuildTicket();
+        collection.addTicket(newTicket.getId(), newTicket);
+        System.out.println("Новый элемент добавлен в коллекцию");
+    }
+    public void updateId(){//обновить значение элемента коллекции
+        Integer id;
+        if(collection.getCollection().containsKey(id)){
+             Ticket ticket = collection.getCollection().get(id);
+             ticket = insert.toBuildTicket();
+        }
+        }
+
+
+            }
+
+            }
+
+
+
     public double sumOfPrice() {
         double totalPrice = 0;
 
@@ -322,16 +359,9 @@ public class CommandCatalog {
 
 }
 
-    /**
-     * A command that sorts a collection in the standard way {@link Commands.ConcreteCommands.SortCommand}
-     * @see Organization#compareTo(Organization)
-     */
 
-    /*public void sort() {
-        LinkedList<Organization> toSort = new LinkedList<>(collection.getCollection());
-        Collections.sort(toSort);
-        collection.setList(toSort);
-    }*/
+
+
 
     /**
      *A command that removes items from a collection that have less than a specified annual turnover{@link Commands.ConcreteCommands.FilterGreaterThanAnnualTurnoverCommand}

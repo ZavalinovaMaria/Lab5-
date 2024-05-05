@@ -26,14 +26,14 @@ import java.io.File;
 
 
 public class FileReader {
-    StringBuilder jsonContent = new StringBuilder();
-
     public FileReader() {
     }
 
     //хороший
     public Hashtable<Integer, Ticket> read(String filePath) {
-        try (Scanner reader = new Scanner(new File(filePath))) {
+        try {
+            Scanner reader = new Scanner(new File(filePath)) ;
+
             StringBuilder jsonContent = new StringBuilder();
             while (reader.hasNextLine()) {
                 jsonContent.append(reader.nextLine());
@@ -59,11 +59,11 @@ public class FileReader {
             }
 
              */
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException | ParseException e) {
-            e.printStackTrace();
+        } catch (ParseException |FileNotFoundException e) {
+            System.out.println("Файл не найден ");
+
         }
+        return null;
 
     }
 }

@@ -1,223 +1,288 @@
 package console;
 
-import subjects.*;
-
-import subjects.enams.TicketType;
-import subjects.enams.VenueType;
-
-import java.time.ZonedDateTime;
-import java.util.Date;
-
 import java.util.Scanner;
 
-public class Inserting {
-    //проверка на единственность ключа
-    Scanner scanner = new Scanner(System.in);
-    public static KeyStorage keyStorage;
-    public static Ticket insert() {
-        String[] output = new String[11];
-        Scanner scanner = new Scanner(System.in);}
+import exceptions.NotUniqueValueException;
+import subjects.*;
+import subjects.enams.TicketType;
+import subjects.enams.VenueType;
+import static console.Console.keyStoragee;
+import java.time.ZonedDateTime;
 
-    public Integer createKey(){
-        while (true){
-            try{
-            System.out.println("Enter key");
-            //String value = scanner.nextLine();
-            Integer key = Integer.parseInt(scanner.nextLine());
-            keyStorage.addNewKey(key);}
-            catch ()
+
+
+    public class Inserting implements Checking {
+        Scanner scanner = new Scanner(System.in);
+        String[] output = new String[4];
+
+        public Ticket toBuildTicket() {
+            Ticket ticket = new Ticket();
+            ticket.setId(createKey());
+            ticket.setName(createName());
+            ticket.setCoordinates(new Coordinates(createX(), createY()));
+            ticket.setCreationDate(ZonedDateTime.now());
+            ticket.setPrice(createPrice());
+            ticket.setDiscount(createDiscount());
+            ticket.setRefundable(createRefundable());
+            ticket.setType(TicketType.valueOf(createTicketType().toUpperCase()));
+            ticket.setVenue(createVenue());
+            return ticket;
+
+        }
+        public void toUpdateTicket(Ticket ticket) {
+            ticket.setName(createName());
+            ticket.setCoordinates(new Coordinates(createX(), createY()));
+            ticket.setCreationDate(ZonedDateTime.now());
+            ticket.setPrice(createPrice());
+            ticket.setDiscount(createDiscount());
+            ticket.setRefundable(createRefundable());
+            ticket.setType(TicketType.valueOf(createTicketType().toUpperCase()));
+            ticket.setVenue(createVenue());
 
         }
 
-        //name
-        while (true) {
-            System.out.println("Enter name");
-            String name = scanner.nextLine();
-            if (name == null || name.isEmpty()) {
-                System.out.println("Name can't be null");
-            } else {
-                output[1] = name;
-                break;
-            }
-        }
-        while (true) {    //coordinates
-            try {
-                System.out.println("Enter x,");
-                String valueX = scanner.nextLine();
-                output[2] = valueX;
-                break;
-            } catch (NumberFormatException e) {
-                System.out.println("Coordinates must be numbers");
-            }
-
+        public Venue toBuildVenue(String[] output) {
+            Venue venue = new Venue();
+            venue.setId(Integer.parseInt(output[0]));
+            venue.setName(output[1]);
+            venue.setCapacity(Long.parseLong(output[2]));
+            venue.setType(VenueType.valueOf(output[3]));
+            return venue;
         }
 
-        while (true) {
-            try {
-                System.out.println("Enter y");
-                String valueY = scanner.nextLine();
-                Float y = Float.parseFloat(valueY);
-                if (valueY.isEmpty()) {
-                    System.out.println("Y can't be null");
-                } else {
-                    output[3] = valueY;
-                    break;
+
+        public Integer createKey() {
+            while (true) {
+                try {
+                    System.out.println("Enter key");
+                    String value = scanner.nextLine();
+                    Integer keyValue = Integer.parseInt(value);
+                    if (keyValue < 0) {
+                        System.out.println("Key can't be null or отрицательный ");
+                    } else {
+                        addNewKey(keyValue);
+                        return keyValue;
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Key must be numbers");
                 }
-            } catch (NumberFormatException e) {
-                System.out.println("Coordinates must be numbers");
             }
         }
 
-
-        while (true) {
-
-            try {
-                System.out.println("Enter price");
-                String valuePrice = scanner.nextLine();
-                float price = Float.parseFloat(valuePrice);
-                if (price <= 0) {
-                    System.out.println("Price must be more than 0");
+        public String createName() {
+            while (true) {
+                System.out.println("Enter name");
+                String name = scanner.nextLine().trim();
+                if (name == null ||  name.isEmpty()) {
+                    System.out.println("Name can't be null");
                 } else {
-                    output[4] = valuePrice;
-                    break;
+                    return name;
                 }
-            } catch (NumberFormatException e) {
-                System.out.println("Price must be a number");
             }
         }
 
-        while (true) {
+        public float createX() {
+            while (true) {
+                try {
+                    System.out.println("Enter x,");
+                    String valueX = scanner.nextLine();
+                    float x = Float.parseFloat(valueX);
+                    return x;
+                } catch (NumberFormatException e) {
+                    System.out.println("Coordinates must be numbers");
+                }
 
-            //discount
-            try {
-                System.out.println("Enter discount");
-                String valueDiscount = scanner.nextLine();
-                double discount = Double.parseDouble(valueDiscount);
-                if (discount < 0 && discount >= 100) {
-                    System.out.println("Discount must be between  0 and 100");
+            }
+        }
+
+        public float createY() {
+
+            while (true) {
+                try {
+                    System.out.println("Enter y");
+                    String valueY = scanner.nextLine();
+                    Float y = Float.parseFloat(valueY);
+                    if (valueY.isEmpty()) {
+                        System.out.println("Y can't be null");
+                    } else {
+                        return y;
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Coordinates must be numbers");
+                }
+            }
+        }
+
+        public float createPrice() {
+
+            while (true) {
+                try {
+                    System.out.println("Enter price");
+                    String valuePrice = scanner.nextLine();
+                    Float price = Float.parseFloat(valuePrice);
+                    if (price < 0) {
+                        System.out.println("Key can't be null or отрицательный ");
+                    } else {
+                        return price;
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Price must be numbers");
+                }
+            }
+        }
+
+        public double createDiscount() {
+
+
+            while (true) {
+                try {
+                    System.out.println("Enter discount");
+                    String valueDiscount = scanner.nextLine();
+                    double discount = Double.parseDouble(valueDiscount);
+                    if (discount < 0 | discount > 100) {
+                        System.out.println("Discount can't be >100 or <0 ");
+                    } else {
+                        return discount;
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Discount must be numbers");
+                }
+            }
+        }
+
+
+        public boolean createRefundable() {
+            while (true) {
+                System.out.println("Enter refundable (true/false):");
+                String refundable = scanner.nextLine().trim().toLowerCase(); // Приводим к нижнему регистру и удаляем лишние пробелы
+
+                if (refundable.equals("true")) {
+                    return true;
+                } else if (refundable.equals("false")) {
+                    return false;
                 } else {
-                    output[5] = valueDiscount;
-                    break;
+                    System.out.println("Refundable must be 'true' or 'false'");
                 }
-            } catch (NumberFormatException e) {
-                System.out.println("Discount must be a number");
             }
         }
-        while (true) {
 
-            try {
-                System.out.println("Enter refundable");
-                String value = scanner.nextLine();
-                //Boolean refundable = Boolean.parseBoolean(value);
-                if (value == null) {
-                    System.out.println("Refundable can't be null");
-                } else {
-                    output[6] = value;
-                    break;
-                }
-            } catch (IllegalArgumentException e) {
-                System.out.println("Refundable must be boolean type");
-            }
-
-        }
-        //type
-        boolean check = true;
-
-        while (check) {
+        //2 раза тоже
+        public String createTicketType() {
+            String output = null;
             System.out.println("Choose type of ticket: ");
             System.out.println("1.VIP");
-            System.out.println("2.GOVERNMENT");
-            System.out.println("3.TRUST");
-            System.out.println("4.OPEN_JOINT_STOCK_COMPANY");
-            String typeTicket = scanner.nextLine();
-            for (TicketType type : TicketType.values()) {
-                if (typeTicket.equalsIgnoreCase(type.name)) {
-                    output[7] = typeTicket;
-                    check = false;
-                    break;
+            System.out.println("2.USUAL");
+            System.out.println("3.BUDGETARY");
+            System.out.println("4.CHEAP");
+            boolean check = true;
+            boolean firstInput = true;
+            while (check) {
+                if (!firstInput) {
+                    System.out.println("Choose type of ticket: "); // Выводим только для последующих вводов
+                }
+                String typeTicket = scanner.nextLine();
+                firstInput = false;
+                for (TicketType type : TicketType.values()) {
+                    if (typeTicket.equalsIgnoreCase(type.name)) {
+                        output = typeTicket;
+                        check = false;
+                        break;
+                    }
+                }
+                if (check) {
+                    System.out.println("You entered the wrong name");
                 }
             }
-            if (check) {
-                System.out.println("You entered the wrong name");
-            }
-        }
-        while (true) {
 
-            System.out.println("Enter Venue name");
-            String nameVenue = scanner.nextLine();
-            if (nameVenue == null || nameVenue.isEmpty()) {
-                System.out.println("Name can't be null");
-            } else {
-                output[8] = nameVenue;
-                break;
-            }
+
+            return output;
         }
-        while (true) {
-            try {
-                System.out.println("Enter capacity");
-                String valueCapacity = scanner.nextLine();
-                float capacity = Long.parseLong(valueCapacity);
-                if (capacity <= 0) {
-                    System.out.println("Capacity must be more than 0");
+
+        public Venue createVenue() {
+
+            while (true) {
+                try {
+                    System.out.println("Enter Venue id");
+                    String valueId = scanner.nextLine();
+                    Integer idVenue = Integer.parseInt(valueId);
+                    if (idVenue < 0) {
+                        System.out.println("Id can't be null or отрицательный ");
+                    } else {
+                        output[0] = valueId;
+                        break;
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Id must be numbers");
+                }
+            }
+            while (true) {
+                System.out.println("Enter Venue name");
+                String nameVenue = scanner.nextLine();
+                if (nameVenue == null || nameVenue.isEmpty()) {
+                    System.out.println("Name can't be null");
                 } else {
-                    output[9] = valueCapacity;
+                    output[1] = nameVenue;
                     break;
                 }
-            } catch (NumberFormatException e) {
-                System.out.println("Capacity must be a number");
+            }
+            while (true) {
+                try {
+                    System.out.println("Enter capacity");
+                    String valueCapacity = scanner.nextLine();
+                    float capacity = Long.parseLong(valueCapacity);
+                    if (capacity <= 0) {
+                        System.out.println("Capacity must be more than 0");
+                    } else {
+                        output[2] = valueCapacity;
+                        break;
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Capacity must be a number");
+                }
+            }
+            boolean check2 = true;
+            while (check2) {
+                System.out.println("Choose type of venue: ");
+                System.out.println("1.BAR");
+                System.out.println("2.CINEMA");
+                System.out.println("3.MALL");
+                System.out.println("4.STADIUM");
+                String typeVenue = scanner.nextLine().trim().toUpperCase();
+                for (VenueType type : VenueType.values()) {
+                    if (typeVenue.equalsIgnoreCase(type.name)) {
+                        output[3] = typeVenue;
+                        check2 = false;
+                        break;
+                    }
+                }
+                if (check2) {
+                    System.out.println("You entered the wrong name");
+                }
+
+            }
+            return toBuildVenue(output);
+            //Price Discount написать, потом протестить, скопировать в lab4   метод ниже аскоментить и проверить что работает
+
+        }
+        @Override
+        public void checkUniqueness(Integer value) throws NotUniqueValueException {
+            if(keyStoragee.contains(value)) throw new NotUniqueValueException(String.format("Элемент с ключом со значением %s уже существует ", value));
+
+            else keyStoragee.add(value);
+        }
+        public void addNewKey(Integer key){
+            try {
+                checkUniqueness(key);
+            }
+            catch (NotUniqueValueException e ){
+                System.out.println(e.getMessage());
+                createKey();
+
             }
         }
 
 
-        boolean check2 = true;
-        while (check2) {
-            System.out.println("Choose type of venue: ");
-            System.out.println("1.BAR");
-            System.out.println("2.CINEMA");
-            System.out.println("3.MALL");
-            System.out.println("4.STADIUM");
-            String typeVenue = scanner.nextLine();
-            for (VenueType type : VenueType.values()) {
-                if (typeVenue.equalsIgnoreCase(type.name)) {
-                    output[10] = typeVenue;
-                    check2 = false;
-                    break;
-                }
-            }
-            if (check) {
-                System.out.println("You entered the wrong name");
-            }
-        }
-        return
-
-                toBuildTicket(output);
     }
-
-
-    /**
-     * This method built new {@link Ticket} object with data.
-     *
-     * @param commands
-     * @return
-     */
-
-    public static Ticket toBuildTicket(String[] commands) {
-        Ticket ticket = new Ticket();
-        ticket.setId(Integer.parseInt(commands[0]));
-        ticket.setName(commands[1]);
-        ticket.setCoordinates(new Coordinates(Float.parseFloat(commands[2]), Float.parseFloat(commands[3])));
-        ticket.setCreationDate(ZonedDateTime.now());
-        ticket.setPrice(Float.parseFloat(commands[4]));
-        ticket.setDiscount(Double.parseDouble(commands[5]));
-        ticket.setRefundable(Boolean.parseBoolean(commands[6]));
-        ticket.setType(TicketType.valueOf(commands[7].toUpperCase()));
-        ticket.setVenue(new Venue((int) (Math.random() * 100000 + 5), commands[8], Long.parseLong(commands[9]), VenueType.valueOf(commands[10].toUpperCase())));
-        return ticket;
-    }
-}
-
-
-
 
 
 

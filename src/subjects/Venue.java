@@ -16,6 +16,7 @@ public class Venue {
         this.type = type;
 
     }
+    public Venue(){}
 
     public String getName() {
         return name;
