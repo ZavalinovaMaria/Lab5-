@@ -5,7 +5,7 @@ public class RemoveLowerKeyCommand implements Command{
     public RemoveLowerKeyCommand(CommandCatalog commandCatalog){this.commandCatalog = commandCatalog;}
     @Override
     public void execute(){
-       // commandCatalog.removeLowerKey();
+        commandCatalog.removeLowerKey();
     }
 
     @Override

@@ -16,7 +16,6 @@ public class CommandCatalog {
     private final Inserting insert;
 
 
-
     /**
      * Command to exit the application {@link Command.ExitCommand}
      */
@@ -38,7 +37,7 @@ public class CommandCatalog {
      */
     private String[] tokens;
 
-    public CommandCatalog(TicketCollection collection, FileReader reader,Inserting insert, FileWriter writer, Map<String, Command> commands) {
+    public CommandCatalog(TicketCollection collection, FileReader reader, Inserting insert, FileWriter writer, Map<String, Command> commands) {
         this.collection = collection;
         this.reader = reader;
         this.writer = writer;
@@ -106,48 +105,63 @@ public class CommandCatalog {
 
     public void history() {
         @Override
-        public void execute(String args) throws InvalidArguments, ExitProgram {
+        public void execute (String args) throws InvalidArguments, ExitProgram {
             if (!args.isBlank()) throw new InvalidArguments();
             List<String> history = commandManager.getCommandHistory();
-            if (history.isEmpty()){
+            if (history.isEmpty()) {
                 console.println("История команд пуста");
                 return; // завершение метода
             }
-            for (String command: history.subList(Math.max(history.size() - 9, 0), history.size())){
+            for (String command : history.subList(Math.max(history.size() - 9, 0), history.size())) {
                 console.println(command);
 
             }
-
-    /**
-     * A command that prints to the console all objects in a collection and their fields {@link Command.ShowCommand}
-     */
-    public void show() {
-        System.out.println("The collection: ");
-        System.out.println(collection.getCollection());
-    }
-    public void printFieldDescendingDiscount(){
-        List<Ticket> sortable = new ArrayList<>(collection.getCollection().values());
-        Comparator<Ticket> sortibility = new ComparatorDiscount();
-        Collections.sort(sortable,sortibility);
-        Collections.reverse(sortable);
-        System.out.println("ля ля яля что сделали ");
-        for(Ticket  ticket : sortable){
-            System.out.println(ticket.getPrice());}
-        //может быть вывод красивее
-
+        }
     }
 
+            /**
+             * A command that prints to the console all objects in a collection and their fields {@link Command.ShowCommand}
+             */
+            public void show () {
+                System.out.println("The collection: ");
+                System.out.println(collection.getCollection());
+            }
+            public void printFieldDescendingDiscount () {
+                List<Ticket> sortable = new ArrayList<>(collection.getCollection().values());
+                Comparator<Ticket> sortibility = new ComparatorDiscount();
+                Collections.sort(sortable, sortibility);
+                Collections.reverse(sortable);
+                System.out.println("ля ля яля что сделали ");
+                for (Ticket ticket : sortable) {
+                    System.out.println(ticket.getPrice());
+                }
+                //может быть вывод красивее
 
-    public void removeLower(){
-        double price;
-        List<Ticket> sortable = new ArrayList<>(collection.getCollection().values());
-        Comparator<Ticket> sortibility = new ComparatorPrice();
-        Collections.sort(sortable,sortibility);
+            }
+            public void removeLowerKey() {
+                Integer key;
+                Iterator<Ticket> iterator = collection.getCollection().values().iterator();
+                while (iterator.hasNext()) {
+                    Ticket ticket = iterator.next();
+                    if (ticket.getId() < key) {
+                        iterator.remove(); // Безопасное удаление элемента с использованием итератора
+                    }
+                }
+                System.out.println("Элеметы успешно удалены ");
+            }
 
 
-        System.out.println("ля ля яля что сделали ");
-        for(Ticket  ticket : sortable){
-            System.out.println(ticket.getPrice());}
+            public void removeLower () {
+                double price;
+                List<Ticket> sortable = new ArrayList<>(collection.getCollection().values());
+                Comparator<Ticket> sortibility = new ComparatorPrice();
+                Collections.sort(sortable, sortibility);
+
+
+                System.out.println("ля ля яля что сделали ");
+                for (Ticket ticket : sortable) {
+                    System.out.println(ticket.getPrice());
+                }
                 //может быть вывод красивее
 
             }
@@ -179,16 +193,16 @@ public class CommandCatalog {
      *
      * @see TicketCollection
      */
-    public void info() {
-        System.out.print("Collection information:");
-        System.out.println(collection);
-    }
+            public void info () {
+                System.out.print("Collection information:");
+                System.out.println(collection);
+            }
 
-    /**
-     * A command that allows you to insert a new object at a given index in the collection {@link Commands.ConcreteCommands.InsertAnIndexCommand}
-     *
-     * @return
-     */
+            /**
+             * A command that allows you to insert a new object at a given index in the collection {@link Commands.ConcreteCommands.InsertAnIndexCommand}
+             *
+             * @return
+             */
 /*
     /**
      * A command that allows you to update an object with a given id {@link Commands.ConcreteCommands.UpdateCommand}
@@ -270,10 +284,6 @@ public class CommandCatalog {
      * A command that allows you to remove elements smaller than the one specified by id {@link Commands.ConcreteCommands.RemoveLowerCommand}
      */
 
-    public double removeLower() {
-
-
-    }
 
 /*
     /**
@@ -311,61 +321,59 @@ public class CommandCatalog {
     }
 
  */
-    public void insertNull(){
-        Inserting insert = new Inserting();
-        Ticket newTicket =insert.toBuildTicket();
-        collection.addTicket(newTicket.getId(), newTicket);
-        System.out.println("Новый элемент добавлен в коллекцию");
+            public void insertNull () {
+                Inserting insert = new Inserting();
+                Ticket newTicket = insert.toBuildTicket();
+                collection.addTicket(newTicket.getId(), newTicket);
+                System.out.println("Новый элемент добавлен в коллекцию");
+            }
+
+    public void removeKey() {
+
     }
-    public void updateId(){//обновить значение элемента коллекции
-        Integer id;
-        if(collection.getCollection().containsKey(id)){
-             Ticket ticket = collection.getCollection().get(id);
-             ticket = insert.toBuildTicket();
-        }
-        }
+            public void updateId() {
+                try {
+                    Integer id;
+                    if (collection.getCollection().containsKey(id)) {
+                        Ticket ticket = collection.getCollection().get(id);
+                        ticket = insert.toUpdateTicket(id);
+                    }
+
+                } catch (Exception e) {
+                    System.out.println(" ");
+                }
+            }
+
+
+            public void sumOfPrice () {
+                double totalPrice = 0;
+
+                Collection<Ticket> values = collection.getCollection().values();
+                for (Ticket ticket : values) {
+                    totalPrice += ticket.getPrice();
+                }
+                System.out.println("Сумма значений поля price для всех элементов коллекции: "+totalPrice);
+            }
+            public void filterContainsName () {
+                Scanner scanner = new Scanner(System.in);//по идее это нужно переделать под консоль
+                System.out.print("Введите подстроку, которую нужно найти:");
+                String name = scanner.nextLine();
+                Collection<Ticket> values = collection.getCollection().values();
+                ArrayList<Ticket> elements = new ArrayList<>();
+                for (Ticket ticket : values) {
+                    String value = ticket.getName();
+                    if (value.contains(name)) elements.add(ticket);
+                }
+                System.out.println("Данную подстроку в имени имеют следущие элементы:" + elements);
+                //вывод должен быть в столбик
 
 
             }
 
-            }
 
-
-
-    public double sumOfPrice() {
-        double totalPrice = 0;
-
-        Collection<Ticket> values = collection.getCollection().values();
-        for (Ticket ticket : values) {
-            totalPrice += ticket.getPrice();
-        }
-        return totalPrice;
-    }
-    public void filterContainsName(){
-        Scanner scanner = new Scanner(System.in);//по идее это нужно переделать под консоль
-        System.out.print ("Введите подстроку, которую нужно найти:");
-        String name = scanner.nextLine();
-        Collection<Ticket> values = collection.getCollection().values();
-        ArrayList<Ticket> elements = new ArrayList<>();
-        for (Ticket ticket : values) {
-            String value =ticket.getName();
-            if(value.contains(name)) elements.add(ticket);
-        }
-        System.out.println("Данную подстроку в имени имеют следущие элементы:"+ elements);
-        //вывод должен быть в столбик
-
-
-
-
-}
-
-
-
-
-
-    /**
-     *A command that removes items from a collection that have less than a specified annual turnover{@link Commands.ConcreteCommands.FilterGreaterThanAnnualTurnoverCommand}
-     */
+            /**
+             *A command that removes items from a collection that have less than a specified annual turnover{@link Commands.ConcreteCommands.FilterGreaterThanAnnualTurnoverCommand}
+             */
   /*  public void filterTurnover() {    содержит ли заданную подстроку
         try {
             long annualTurnover;
@@ -391,9 +399,9 @@ public class CommandCatalog {
         }
     }*/
 
-    /**
-     * A command that removes one object of a given type from a collection{@link Commands.ConcreteCommands.RemoveAnyByTypeCommand}
-     */
+            /**
+             * A command that removes one object of a given type from a collection{@link Commands.ConcreteCommands.RemoveAnyByTypeCommand}
+             */
    /* public void removeByType() {   тоже по ключу
         try {
             String organizationType;
@@ -433,11 +441,12 @@ public class CommandCatalog {
         }
     } */
 
-    /**
-     * A command that displays a list of objects in a collection in ascending order {@link Commands.ConcreteCommands.PrintAscendingCommand}
-     */
-    /*public void printAscending() {   у них по возрастания нам нужно по убыванию sort по disount
-        sort();
-        System.out.println(collection.getCollection());
-    }*/
-}
+            /**
+             * A command that displays a list of objects in a collection in ascending order {@link Commands.ConcreteCommands.PrintAscendingCommand}
+             */
+
+        }
+    }
+
+
+
