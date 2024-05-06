@@ -13,7 +13,7 @@ public class HistoryCommand implements Command{
     }
     @Override
     public void execute(){
-        commandCatalog.history();
+        //commandCatalog.history();
     }
     /**
      * Method that returns command description

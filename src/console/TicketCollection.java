@@ -62,28 +62,15 @@ public class TicketCollection implements Checking  {
 
 
 
-
-
-
-
     public String getType() {
         return type;
     }
 
-    /*public void setType(TicketType type) {
-        this.lastOrganizationTypeWorkedWith = lastOrganizationTypeWorkedWith;
-    }*/
 
 
     public int getCountOfElements() {
         return countOfElements;
     }
-
-
-
-
-
-
     public void deleteKey(Integer key){
         try {
             checkExistence(key);
@@ -97,6 +84,7 @@ public class TicketCollection implements Checking  {
     /**
      * Добавляет новый продукт в коллекцию
      */
+
     @Override
     public void addNewKey(Integer key){
         try{
@@ -109,9 +97,7 @@ public class TicketCollection implements Checking  {
 
 
 
-
-
-    public void addTicket(Integer key,Ticket ticket)  {
+    /*public void addTicket(Integer key,Ticket ticket)  {
         try{
             if(!checkingUniqueness(key)){
                 tickets.put(key, ticket);
@@ -121,9 +107,12 @@ public class TicketCollection implements Checking  {
         catch(NotUniqueValueException e){
             System.out.println(" ");}}
 
+     */
+
     public void deleteTicket(Integer key,Ticket ticket){
         deleteKey(key);
         tickets.remove(key,ticket);
+        setTable(tickets);
         updateData();
     }
 

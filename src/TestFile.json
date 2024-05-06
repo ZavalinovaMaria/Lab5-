@@ -1,6 +1,77 @@
-{
-  "name": "T1",
-  "Coordinates": {
-    "x": 1,
-    "y": 2}
-}
+[
+  {
+    "id": 1,
+    "name": "Product 1",
+    "coordinates": {
+      "x": 10,
+      "y": 20
+    },
+    "creationDate": "2024-04-26T10:15:30Z",
+    "price": 100.0,
+    "discount": 10,
+    "refundable": "false",
+    "type": "VIP",
+    "venue": {
+      "id": 15,
+      "name": "venue 1",
+      "capacity": 239,
+      "type": "MALL"
+    }
+  },
+  {
+    "id":  65,
+    "name": " gub",
+    "coordinates": {
+      "x": -14,
+      "y": "dfkmjv"
+    },
+    "creationDate": " ",
+    "price": -584590,
+    "discount": 0,
+    "refundable": "  ",
+    "type": "USUA",
+    "venue": {
+      "id":"jgnkj",
+      "name": 349,
+      "capacity":"dfkm",
+      "type": 34}
+  },
+  {
+    "id": 9,
+    "name": "Product 3",
+    "coordinates": {
+      "x": 90,
+      "y": 80
+    },
+    "creationDate": "2024-04-26T10:15:40Z",
+    "price": 50.0,
+    "discount": 40,
+    "refundable": "false",
+    "type": "USUAL",
+    "venue": {
+      "id": 56,
+      "name": "venue 3",
+      "capacity": 369,
+      "type": "BAR"
+    }
+    },
+  {
+    "id": 4,
+    "name": " ",
+    "coordinates": {
+      "x": 10,
+      "y": 20
+    },
+    "creationDate": "2024-04-26T10:15:30Z",
+    "price": 100.0,
+    "discount": 10,
+    "refundable": " ",
+    "type": "VIP",
+    "venue": {
+      "id": 15,
+      "name": "venue 1",
+      "capacity": 239,
+      "type": "MALL"
+    }
+  }
+]

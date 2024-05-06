@@ -14,7 +14,7 @@ public interface Checking{
         else return false;
     }
     //default void checkingUniqueness(Integer value) throws NotUniqueValueException{}
-    void addNewKey(Integer key);
+     void  addNewKey(Integer key);
     default void checkExistence(Integer value) throws NotExistingValueException {
         if(!keyStoragee.contains(value)) throw new NotExistingValueException(String.format("Элемент с ключом со значением %s не содержится в коллекции ", value));
 

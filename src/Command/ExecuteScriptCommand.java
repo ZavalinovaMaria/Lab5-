@@ -13,7 +13,7 @@ public class ExecuteScriptCommand implements Command{
     }
     @Override
     public void execute(){
-        commandCatalog.executeScript();
+       // commandCatalog.executeScript();
     }
     /**
      * Method that returns command description
