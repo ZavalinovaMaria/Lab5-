@@ -81,6 +81,7 @@ public  class Ticket implements Comparable<Ticket> {
         this.creationDate = creationDate;
     }
 
+
     public void setVenue(Venue venue) {
         this.venue = venue;
     }

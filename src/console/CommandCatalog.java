@@ -3,6 +3,7 @@ import Command.*;
 import exceptions.NotExistingValueException;
 import exceptions.NotUniqueValueException;
 import fileWork.FileReader;
+import fileWork.Writer;
 import subjects.*;
 import subjects.Сomporators.ComparatorDiscount;
 import subjects.Сomporators.ComparatorPrice;
@@ -17,6 +18,7 @@ public class CommandCatalog {
     private final FileReader reader;
     //private final FileWriter writer;
     private final Inserting insert;
+    private final Writer writer;
 
 
     private TicketCollection collection;
@@ -30,9 +32,10 @@ public class CommandCatalog {
 
     private String[] tokens;
 
-    public CommandCatalog(TicketCollection collection, FileReader reader, Inserting insert, Map<String, Command> commands) {
+    public CommandCatalog(TicketCollection collection, FileReader reader, Writer writer, Inserting insert, Map<String, Command> commands) {
         this.collection = collection;
         this.reader = reader;
+        this.writer = writer;
 
         this.commands = commands;
         this.insert = insert;
@@ -156,9 +159,11 @@ public class CommandCatalog {
     }
 
     public void save() {
-
+        Writer writer1 = new Writer();
+        writer1.create();
+        System.out.println("poprobyem");
     }
-
+//по идее не надо в методе ниже создавать инсерт
     public void insert() {
         Inserting insert = new Inserting();
         Ticket newTicket = insert.toBuildTicket();

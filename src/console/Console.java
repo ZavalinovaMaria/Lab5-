@@ -3,6 +3,7 @@ package console;
 import Command.*;
 
 import fileWork.FileReader;
+import fileWork.Writer;
 
 import java.util.*;
 
@@ -33,11 +34,11 @@ public class Console {
             return;
         }
         FileReader reader = new FileReader();
+        Writer writer = new Writer();
         Inserting insert = new Inserting();
         keyStoragee = new ArrayList<>();
-        //keyStoragee.addAll(reader.read(path).keySet());
         TicketCollection collection = new TicketCollection(reader.read(path));
-        CommandCatalog commandCatalog = new CommandCatalog(collection, reader, insert, commands);
+        CommandCatalog commandCatalog = new CommandCatalog(collection, reader,writer, insert, commands);
 
 
         commands.put("help", new HelpCommand(commandCatalog));

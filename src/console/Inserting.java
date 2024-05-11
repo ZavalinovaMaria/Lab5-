@@ -1,5 +1,6 @@
 package console;
 
+import java.util.Random;
 import java.util.Scanner;
 
 import exceptions.NotUniqueValueException;
@@ -8,8 +9,7 @@ import subjects.enams.TicketType;
 import subjects.enams.VenueType;
 import static console.Console.keyStoragee;
 import java.time.ZonedDateTime;
-
-
+import java.util.concurrent.Callable;
 
 
 public class Inserting implements Checking {
@@ -192,7 +192,7 @@ public class Inserting implements Checking {
         }
     }
 
-    //2 раза тоже
+
     public String createTicketType() {
         String output = null;
         System.out.println("Choose type of ticket: ");
@@ -224,23 +224,14 @@ public class Inserting implements Checking {
         return output;
     }
 
-    public Venue createVenue() {
 
-        while (true) {
-            try {
-                System.out.println("Enter Venue id");
-                String valueId = scanner.nextLine();
-                Integer idVenue = Integer.parseInt(valueId);
-                if (idVenue < 0) {
-                    System.out.println("Id can't be null or отрицательный ");
-                } else {
-                    output[0] = valueId;
-                    break;
-                }
-            } catch (NumberFormatException e) {
-                System.out.println("Id must be numbers");
-            }
-        }
+
+
+    public Venue createVenue() {
+        Random random = new Random();
+        Integer valueId = random.nextInt(100000)+1;
+        output[0] = String.valueOf(valueId);
+
         while (true) {
             System.out.println("Enter Venue name");
             String nameVenue = scanner.nextLine();
