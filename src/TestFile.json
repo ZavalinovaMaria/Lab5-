@@ -1,4 +1,22 @@
-[
+[{
+  "id": 4,
+  "name": " ",
+  "coordinates": {
+    "x": 10,
+    "y": 20
+  },
+  "creationDate": "2024-04-26T10:15:30Z",
+  "price": 100.0,
+  "discount": 10,
+  "refundable": " ",
+  "type": "VIP",
+  "venue": {
+    "id": 15,
+    "name": "venue 1",
+    "capacity": 239,
+    "type": "MALL"
+  }
+},
   {
     "id": 1,
     "name": "Product 1",
@@ -56,7 +74,7 @@
     }
     },
   {
-    "id": 4,
+    "id": 5,
     "name": " ",
     "coordinates": {
       "x": 10,

@@ -34,7 +34,8 @@ class TicketFactory {
         int countOfNullFields = 0;
 
         for (Object obj : jsonArray) {
-            try{
+            countOfNullFields = 0;
+            try {
                 JSONObject jsonObject = (JSONObject) obj;
                 Integer id = jsonObject.get("id") != null && Integer.parseInt(jsonObject.get("id").toString()) > 0 ? Integer.parseInt(jsonObject.get("id").toString()) : null;
                 if (id == null) countOfNullFields++;
@@ -45,7 +46,7 @@ class TicketFactory {
                 float y = coordinatesString != null && coordinatesString.get("y") != null ? Float.parseFloat(coordinatesString.get("y").toString()) : 0.0f;
                 if (x == 0.0f) countOfNullFields++;
                 if (y == 0.0f) countOfNullFields++;
-                if (coordinatesString == null) countOfNullFields++;;
+                if (coordinatesString == null) countOfNullFields++;
                 String creationDateString = (String) jsonObject.get("creationDate");
                 ZonedDateTime creationDate = creationDateString != null ? ZonedDateTime.parse(creationDateString) : null;
                 if (creationDateString == null) countOfNullFields++;
@@ -84,16 +85,21 @@ class TicketFactory {
 
 
                 if (countOfNullFields != 0)
-                    throw new NullValueException(String.format("продукт не может быть собран тк есть пустые поля "), null);
+                    throw new NullValueException(String.format("Есть пустое поле- продукт не будет собран  "), null);
+
                 else {
                     peopleTable.put(id, new Ticket(id, name, new Coordinates(x, y), creationDate, price, discount, refundable, type, new Venue(idVenue, nameVenue, capacity, typeVenue)));
-                    }
+                }
 
-            } catch (NullValueException e ) {
-                System.out.println(e.getMessage());
+
             } catch (NumberFormatException e1) {
-                System.out.println("некорректный формат числа ");
+                System.out.println("Есть поле с некорректным форматом числа-продукт не будет собран ");
+
+            } catch (NullValueException e) {
+                System.out.println(e.getMessage());
+                continue;
             }
+
         }
         return peopleTable;
     }

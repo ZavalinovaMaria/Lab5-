@@ -81,9 +81,7 @@ public class TicketCollection implements Checking  {
 
     }
 
-    /**
-     * Добавляет новый продукт в коллекцию
-     */
+
 
     @Override
     public void addNewKey(Integer key){

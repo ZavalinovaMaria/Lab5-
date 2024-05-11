@@ -84,7 +84,6 @@ public class Inserting implements Checking {
 
         else keyStoragee.add(value);
     }
-
     // по моему можно удалить тк тут он не нужен, а в коллекции не используется вообще
     public void addNewKey(Integer key){
         try {

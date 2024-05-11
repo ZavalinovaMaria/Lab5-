@@ -1,5 +1,6 @@
 package console;
 import Command.*;
+import exceptions.NotExistingValueException;
 import exceptions.NotUniqueValueException;
 import fileWork.FileReader;
 import subjects.*;
@@ -21,6 +22,7 @@ public class CommandCatalog {
     private TicketCollection collection;
     /* private json files*/
     private Map<String, Command> commands;
+    private final List<String> commandHistory = new ArrayList<>();
 
     private String[] compositeCommand = new String[9];
 
@@ -35,6 +37,9 @@ public class CommandCatalog {
         this.commands = commands;
         this.insert = insert;
     }
+    public void addToHistory(String command){
+    commandHistory.add(command);
+}
 
     public void setTokens(String[] tokens) {
         this.tokens = tokens;
@@ -77,22 +82,18 @@ public class CommandCatalog {
         collection.updateData();
         System.out.println("Коллекция пуста");
     }
-/*
+
     public void history() {
-        @Override
-        public void execute (String args) throws InvalidArguments, ExitProgram {
-            if (!args.isBlank()) throw new InvalidArguments();
-            List<String> history = commandManager.getCommandHistory();
-            if (history.isEmpty()) {
-                console.println("История команд пуста");
+            if (commandHistory.isEmpty()) {
+                System.out.println("История команд пуста");
                 return; // завершение метода
             }
-            for (String command : history.subList(Math.max(history.size() - 9, 0), history.size())) {
-                console.println(command);
-
+            for (String command : commandHistory.subList(Math.max(commandHistory.size() - 13, 0), commandHistory.size())) {
+                System.out.println(command);
             }
         }
-    }*/
+
+
 
     public void printFieldDescendingDiscount() {
         List<Ticket> sortable = new ArrayList<>(collection.getCollection().values());
@@ -108,16 +109,15 @@ public class CommandCatalog {
     }
 
     public void removeLowerKey() {
-        //удалить ключи из хранилища
         try {
             Integer key;
             key = Integer.parseInt(tokens[1]);
-
             Iterator<Ticket> iterator = collection.getCollection().values().iterator();
             while (iterator.hasNext()) {
                 Ticket ticket = iterator.next();
                 if (ticket.getId() < key) {
                     iterator.remove();
+                    collection.deleteKey(ticket.getId());
                 }
             }
             collection.updateData();
@@ -135,19 +135,23 @@ public class CommandCatalog {
         try {
             Integer key;
             key = Integer.parseInt(tokens[1]);
-            //проверка на то что элемент с данным ключом существует
-            Iterator<Ticket> iterator = collection.getCollection().values().iterator();
-            while (iterator.hasNext()) {
-                Ticket ticket = iterator.next();
-                if (ticket.getPrice() < collection.getCollection().get(key).getPrice()) {
-                    iterator.remove();
+            if (collection.checkingExistence(key)) {
+                Iterator<Ticket> iterator = collection.getCollection().values().iterator();
+                while (iterator.hasNext()) {
+                    Ticket ticket = iterator.next();
+                    if (ticket.getPrice() < collection.getCollection().get(key).getPrice()) {
+                        iterator.remove();
+                        collection.deleteKey(ticket.getId());
+                    }
                 }
+                System.out.println("Элеметы успешно удалены ");
+                collection.updateData();
             }
-            System.out.println("Элеметы успешно удалены ");
-            collection.updateData();
 
         } catch (NumberFormatException e) {
             System.out.println("Ключ должен быть числом ");
+        } catch (NotExistingValueException e) {
+            System.out.println("Элемент с таким ключом не содержится в коллекции не может быть удален ");;
         }
     }
 
@@ -155,42 +159,44 @@ public class CommandCatalog {
 
     }
 
-    public void insertNull() {
+    public void insert() {
         Inserting insert = new Inserting();
         Ticket newTicket = insert.toBuildTicket();
         collection.getCollection().put(newTicket.getId(), newTicket);
         collection.updateData();
         System.out.println("Новый элемент добавлен в коллекцию");
     }
-
+//сделать в методе ниже разный вывод текста Ж сейчас в любом случае выведет что элемент удален даже если его нет НО все работает
     public void removeKey() {
-        try {
-            Integer key;
-            key = Integer.parseInt(tokens[1]);
-            collection.deleteKey(key);
-            collection.getCollection().remove(key);
-            collection.updateData();
-            System.out.println("Элемент успешно удален");
-        } catch (NumberFormatException e) {
-            System.out.println("Ключ должен быть числом ");
+            try {
+                Integer key;
+                key = Integer.parseInt(tokens[1]);
+                collection.deleteKey(key);
+                collection.getCollection().remove(key);
+                collection.updateData();
+
+            } catch (NumberFormatException e) {
+                System.out.println("Ключ должен быть числом ");
+            }
         }
-    }
+
 
         public void updateId () {
             try {
                 Integer id;
                 id = Integer.parseInt(tokens[1]);
-                if (collection.checkingUniqueness(id)) {
+                if (collection.checkingExistence(id)) {
                     insert.toUpdateTicket(collection.getCollection().get(id));
                     System.out.println("Значение элемента успешно обновлено");
                 }
 
             } catch (NumberFormatException e) {
-                System.out.println("Ключ должен быть числом ");
+                System.out.println("Id должен быть числом ");
             }
-            catch (NotUniqueValueException e){
-                System.out.println("Такого нет у нас ");
+            catch (NotExistingValueException e){
+                System.out.println("Элемент с подобным ключем не обнаружен ");
             }
+
         }
 
         public void sumOfPrice () {

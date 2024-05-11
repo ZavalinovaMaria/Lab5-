@@ -5,5 +5,5 @@ public class Main {
         Console console  = new Console();
         console.toStart();
     }
-   // /Users/mariazavalinova/Desktop/proga/lab4/src/TestFile.json  remove_key
+   // /Users/mariazavalinova/Desktop/proga/lab4/src/TestFile.json
 }

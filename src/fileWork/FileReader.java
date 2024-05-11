@@ -29,9 +29,7 @@ import java.io.File;
 public class FileReader  {
     //public static String filePath;
     StringBuilder jsonContent = new StringBuilder();
-    // static int countOfNullFields = 0;
 
-    //
     public Hashtable<Integer, Ticket> read(String filePath) {
         Hashtable<Integer, Ticket> peop = new Hashtable<>();
         try (Scanner reader = new Scanner(new File(filePath))) {
@@ -50,7 +48,7 @@ public class FileReader  {
 
         } catch (FileNotFoundException e) {
             System.out.println("No such file in this directory");
-            ;
+
 
         } catch (ParseException e) {
             e.printStackTrace();

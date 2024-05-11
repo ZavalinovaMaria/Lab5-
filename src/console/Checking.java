@@ -20,6 +20,14 @@ public interface Checking{
 
         else keyStoragee.remove(value);
     }
+    default Boolean checkingExistence(Integer value) throws NotExistingValueException {
+        if(!keyStoragee.contains(value)) throw new NotExistingValueException(String.format("Элемент с ключом со значением %s не содержится в коллекции ", value));
+
+        else {
+            return true;
+        }
+    }
+
 
     default void checkUniqueness(Integer value) throws NotUniqueValueException{
         if(keyStoragee.contains(value)) throw new NotUniqueValueException(String.format("Элемент с ключом со значением %s уже существует ", value));

@@ -2,10 +2,7 @@ package console;
 
 import Command.*;
 
-import console.*;
 import fileWork.FileReader;
-
-import subjects.*;
 
 import java.util.*;
 
@@ -38,7 +35,7 @@ public class Console {
         FileReader reader = new FileReader();
         Inserting insert = new Inserting();
         keyStoragee = new ArrayList<>();
-        keyStoragee.addAll(reader.read(path).keySet());
+        //keyStoragee.addAll(reader.read(path).keySet());
         TicketCollection collection = new TicketCollection(reader.read(path));
         CommandCatalog commandCatalog = new CommandCatalog(collection, reader, insert, commands);
 
@@ -50,7 +47,7 @@ public class Console {
         commands.put("exit", new ExitCommand(commandCatalog));
         commands.put("update_id", new UpdateIdCommand(commandCatalog));
         commands.put("info", new InfoCommand(commandCatalog));
-        commands.put("insert_null", new InsertNullCommand(commandCatalog));
+        commands.put("insert", new InsertCommand(commandCatalog));
         commands.put("remove_key", new RemoveKeyCommand(commandCatalog));
         commands.put("execute_script_file_name", new ExecuteScriptCommand(commandCatalog));
         commands.put("remove_lower", new RemoveLowerCommand(commandCatalog));
@@ -59,8 +56,8 @@ public class Console {
         commands.put("filter_contains_name", new FilterContainsNameCommand(commandCatalog));
         commands.put("sum_of_price", new SumOfPriceCommand(commandCatalog));
         commands.put("print_field_descending_discount", new PrintFieldDescendingDiscountCommand(commandCatalog));
-        System.out.println("Print the command");
         while (true) {
+            System.out.println("Print the command");
             String query = null;
             try{
                 Scanner scan = new Scanner(System.in);
@@ -77,10 +74,14 @@ public class Console {
             commandCatalog.setTokens(tokens);
             Command command = commands.get(tokens[0]);
             try {
+
                 command.execute();
+                commandCatalog.addToHistory(String.valueOf(command));
             } catch (NullPointerException e) {
                 System.out.println("The entered command does not exist");
-            }
+            }catch(ArrayIndexOutOfBoundsException e){
+                System.out.println("Недопустимый формат команды");}
+
         }
     }
 }

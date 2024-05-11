@@ -23,4 +23,8 @@ public class ShowCommand implements Command{
     public String description() {
         return "show: вывод в стандартный поток элементов коллекции в строковом представлении";
     }
+    @Override
+    public String toString(){
+        return "show";
+    }
 }
