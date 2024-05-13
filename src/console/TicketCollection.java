@@ -33,7 +33,7 @@ public class TicketCollection implements Checking  {
         initializationDate = new Date();
         for(Integer key:tickets.keySet()){
             addNewKey(key);
-        };
+        }
     }
 
 

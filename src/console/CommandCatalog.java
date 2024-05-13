@@ -4,26 +4,31 @@ import exceptions.NotExistingValueException;
 import exceptions.NotUniqueValueException;
 import fileWork.FileReader;
 import fileWork.Writer;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import subjects.*;
 import subjects.Сomporators.ComparatorDiscount;
-import subjects.Сomporators.ComparatorPrice;
+//import subjects.Сomporators.ComparatorPrice;
 
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 
-
+import static console.Console.firstFilePath;
+import static console.Console.commands;
 
 public class CommandCatalog {
     private final FileReader reader;
-    //private final FileWriter writer;
     private final Inserting insert;
     private final Writer writer;
 
 
     private TicketCollection collection;
-    /* private json files*/
-    private Map<String, Command> commands;
+    private Set<String> scriptHistory = new HashSet<>();
+    //private Map<String, Command> commands;
     private final List<String> commandHistory = new ArrayList<>();
 
     private String[] compositeCommand = new String[9];
@@ -36,8 +41,7 @@ public class CommandCatalog {
         this.collection = collection;
         this.reader = reader;
         this.writer = writer;
-
-        this.commands = commands;
+        //this.commands = commands;
         this.insert = insert;
     }
     public void addToHistory(String command){
@@ -96,6 +100,45 @@ public class CommandCatalog {
             }
         }
 
+        public void executeScript(){
+            try {
+                File script;
+                if (isScriptWorking) {
+                    script = new File(compositeCommand[0]);
+                } else {
+                    script = new File(tokens[1]);
+                }
+                if (!script.exists()) {
+                    System.out.println("Specified file is not exist");
+                    return;
+                }
+                if (scriptHistory.contains(compositeCommand[0])) {
+                    System.out.println("This script has already been executed");
+                    return;
+                }
+                if (isScriptWorking) {
+                    scriptHistory.add(compositeCommand[0]);
+                }
+                else {
+                    scriptHistory.add(tokens[1]);
+                }
+                isScriptWorking = true;
+                ScriptManager scriptManager = new ScriptManager(script, commands, this);
+                System.out.println("Script is executing");
+                if (isScriptWorking) {
+                    clearCompositeCommand();
+                }
+                scriptManager.executeScript();
+                isScriptWorking = false;
+                System.out.println("Script executed successfully");
+            } catch (ArrayIndexOutOfBoundsException e) {
+                System.out.println("Please, enter the file name in the command");
+            }
+
+        }
+
+
+
 
 
     public void printFieldDescendingDiscount() {
@@ -114,7 +157,11 @@ public class CommandCatalog {
     public void removeLowerKey() {
         try {
             Integer key;
-            key = Integer.parseInt(tokens[1]);
+            if(isScriptWorking){
+                key = Integer.parseInt(compositeCommand[0]);
+                clearCompositeCommand();
+            } else {
+            key = Integer.parseInt(tokens[1]);}
             Iterator<Ticket> iterator = collection.getCollection().values().iterator();
             while (iterator.hasNext()) {
                 Ticket ticket = iterator.next();
@@ -137,7 +184,12 @@ public class CommandCatalog {
     public void removeLower() {
         try {
             Integer key;
-            key = Integer.parseInt(tokens[1]);
+            if(isScriptWorking){
+
+                key = Integer.parseInt(compositeCommand[0]);
+                clearCompositeCommand();
+            } else {
+            key = Integer.parseInt(tokens[1]);}
             if (collection.checkingExistence(key)) {
                 Iterator<Ticket> iterator = collection.getCollection().values().iterator();
                 while (iterator.hasNext()) {
@@ -159,15 +211,90 @@ public class CommandCatalog {
     }
 
     public void save() {
-        Writer writer1 = new Writer();
-        writer1.create();
-        System.out.println("poprobyem");
-    }
-//по идее не надо в методе ниже создавать инсерт
+    String filePath = null;
+    String option ;
+    System.out.println("Выберете место сохранения и введите соответствующую цифру:"+
+            "\n 1. Сохранить коллекцию в файл, из которого производили чтение"+
+            "\n 2.Сохранить коллекцию в другой файл"+
+            "\n 3. Создать новый файл и сохранить коллекцию туда ");
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            option = scanner.nextLine();
+            if (option == null | option.isEmpty()) {
+                System.out.println("Необходимо выбрать параметр сохраненея,введите число 1 или 2 ");
+            }
+            if(!option.equals("1") && !option.equals("2") && !option.equals("3")){
+                System.out.println("Необходимо ввести 1, 2 или 3");
+            }else {
+                break;
+            }
+        }
+        switch (option) {
+            case "1" -> filePath = firstFilePath;
+
+            case "2" -> {
+                System.out.println("Введите путь до файла, в который хотите сохранить коллекцию");
+                while(true) {
+                    try{
+                        String path = scanner.next();
+                        File file = new File(path);
+                        if (path == null || path.isEmpty())  {
+                            System.out.println("Пустой путь недопустим");
+                        }
+                        if(!file.exists()){ throw  new FileNotFoundException("Файл не найден");}
+                        else {
+                            System.out.println("Путь к файлу успешно получен");
+                            filePath = path;
+                            break;
+                        }
+                    }catch (FileNotFoundException e){
+                        System.out.println(e.getMessage());
+                    }
+                }}
+                case "3"->{
+                    System.out.println("Введите путь, в котором хотите создать файл ");
+                    while(true) {
+                        String path = scanner.next();
+                        File file = new File(path);
+                        if (path == null || path.isEmpty())  {
+                            System.out.println("Пустой путь недопустим");
+                        }
+                        else {
+                            System.out.println("Путь к файлу успешно получен");
+                            filePath = path;
+                            break;}
+                        try{
+                            if(file.createNewFile()){
+                                System.out.println("Файл создан");
+                            }
+                            else {System.out.println("беда ");}
+                        }catch(IOException e ){
+                            System.out.println("Ошибка при создании файла ");
+                        }
+                    }
+            }
+
+        }
+    writer.writeToFile(collection, filePath);
+}
+
+
     public void insert() {
-        Inserting insert = new Inserting();
-        Ticket newTicket = insert.toBuildTicket();
-        collection.getCollection().put(newTicket.getId(), newTicket);
+        if(isScriptWorking){
+            try {
+                Ticket newTicket = insert.toBuildTicket(compositeCommand);
+                if(insert.checkingUniqueness(newTicket.getId())){
+                    collection.addNewKey(newTicket.getId());
+                    collection.getCollection().put(newTicket.getId(), newTicket);}
+            }catch (NumberFormatException E){
+                System.out.println("Ошибка заполнения полей ");
+            } catch (NotUniqueValueException e) {
+            System.out.println("Элемент с таким id уже есть в коллекции");
+        }
+
+        }else{
+        Ticket newTicket = insert.createTicket();
+        collection.getCollection().put(newTicket.getId(), newTicket);}
         collection.updateData();
         System.out.println("Новый элемент добавлен в коллекцию");
     }
@@ -175,12 +302,16 @@ public class CommandCatalog {
     public void removeKey() {
             try {
                 Integer key;
+                if(isScriptWorking){
+                    key = Integer.parseInt(compositeCommand[0]);
+                    clearCompositeCommand();
+                }else{
                 key = Integer.parseInt(tokens[1]);
                 collection.deleteKey(key);
                 collection.getCollection().remove(key);
                 collection.updateData();
 
-            } catch (NumberFormatException e) {
+            }} catch (NumberFormatException e) {
                 System.out.println("Ключ должен быть числом ");
             }
         }
@@ -189,9 +320,13 @@ public class CommandCatalog {
         public void updateId () {
             try {
                 Integer id;
-                id = Integer.parseInt(tokens[1]);
+                if(isScriptWorking){
+                    id = Integer.parseInt(compositeCommand[0]);
+                    clearCompositeCommand();
+                }else{
+                id = Integer.parseInt(tokens[1]);}
                 if (collection.checkingExistence(id)) {
-                    insert.toUpdateTicket(collection.getCollection().get(id));
+                    insert.toUpdateTicket(collection.getCollection().get(id),compositeCommand);
                     System.out.println("Значение элемента успешно обновлено");
                 }
 
@@ -213,7 +348,7 @@ public class CommandCatalog {
             System.out.println("Сумма значений поля price для всех элементов коллекции: " + totalPrice);
         }
         public void filterContainsName () {
-            Scanner scanner = new Scanner(System.in);//по идее это нужно переделать под консоль
+            Scanner scanner = new Scanner(System.in);
             System.out.print("Введите подстроку, которую нужно найти:");
             String name = scanner.nextLine();
             Collection<Ticket> values = collection.getCollection().values();

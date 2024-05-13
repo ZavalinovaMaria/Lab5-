@@ -23,4 +23,8 @@ public class InsertCommand implements Command{
     public String description() {
         return "insert: добавить новый элемент с заданным ключом";
     }
+    @Override
+    public String toString() {
+        return "insert";
+    }
 }

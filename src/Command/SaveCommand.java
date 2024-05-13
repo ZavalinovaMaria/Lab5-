@@ -23,4 +23,8 @@ public class SaveCommand implements Command{
     public String description() {
         return "save: сохранить коллекцию в файл";
     }
+    @Override
+    public String toString() {
+        return "save";
+    }
 }

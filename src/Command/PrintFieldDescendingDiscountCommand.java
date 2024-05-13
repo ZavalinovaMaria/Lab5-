@@ -16,4 +16,8 @@ public class PrintFieldDescendingDiscountCommand implements Command{
     public String description() {
         return "printFieldDescendingDiscount : вывести значения поля discount всех элеменетов в порядке убывания";
     }
+    @Override
+    public String toString() {
+        return "print_field_descending_discount";
+    }
 }

@@ -23,4 +23,8 @@ public class RemoveKeyCommand implements Command{
     public String description() {
         return "removeKey: удалить элемент из коллекции по его ключу";
     }
+    @Override
+    public String toString() {
+        return "remove_key";
+    }
 }

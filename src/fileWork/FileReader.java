@@ -49,11 +49,11 @@ public class FileReader  {
         } catch (FileNotFoundException e) {
             System.out.println("No such file in this directory");
 
-
         } catch (ParseException e) {
             e.printStackTrace();
+        }catch(ClassCastException e ){
+            System.out.println("бля ");
         }
-
         return peop;
     }
 

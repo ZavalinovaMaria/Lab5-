@@ -23,4 +23,8 @@ public class HelpCommand implements Command{
     public String description() {
         return "help: помощь";
     }
+    @Override
+    public String toString(){
+        return "help";
+    }
 }

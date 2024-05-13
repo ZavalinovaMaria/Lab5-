@@ -23,4 +23,8 @@ public class HistoryCommand implements Command{
     public String description() {
         return "history: вывести последние 13 команд (без их аргументов)";
     }
+    @Override
+    public String toString() {
+        return "history";
+    }
 }

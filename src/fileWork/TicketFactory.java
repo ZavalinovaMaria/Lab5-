@@ -47,6 +47,9 @@ class TicketFactory {
                 if (x == 0.0f) countOfNullFields++;
                 if (y == 0.0f) countOfNullFields++;
                 if (coordinatesString == null) countOfNullFields++;
+
+                System.out.println(countOfNullFields);
+
                 String creationDateString = (String) jsonObject.get("creationDate");
                 ZonedDateTime creationDate = creationDateString != null ? ZonedDateTime.parse(creationDateString) : null;
                 if (creationDateString == null) countOfNullFields++;
@@ -57,8 +60,10 @@ class TicketFactory {
                                 Double.parseDouble(jsonObject.get("discount").toString()) : null) :
                         null;
                 if (discount == null) countOfNullFields++;
-                String refundableObj = ((String) jsonObject.get("refundable")).trim().toLowerCase();
 
+                System.out.println(countOfNullFields);
+
+                String refundableObj = ((String) jsonObject.get("refundable")).trim().toLowerCase();
                 Boolean refundable = null;
                 if (refundableObj.equals("true")) {
                     refundable = true;
@@ -69,8 +74,10 @@ class TicketFactory {
                     countOfNullFields++;
                 }
                 String typeString = jsonObject.get("type") != null ? (String) jsonObject.get("type") : null;
-                TicketType type = typeString != null ? TicketType.valueOf(typeString) : null;
+                TicketType type = typeString != null ? TicketType.valueOf(typeString.toUpperCase()) : null;
                 if (typeString == null) countOfNullFields++;
+
+                System.out.println(countOfNullFields);
 
                 JSONObject venue = (JSONObject) jsonObject.get("venue");
                 Integer idVenue = venue.get("id") != null && Integer.parseInt(venue.get("id").toString()) > 0 ? Integer.parseInt(venue.get("id").toString()) : null;
@@ -80,12 +87,14 @@ class TicketFactory {
                 Long capacity = venue.get("capacity") != null && Long.parseLong(venue.get("capacity").toString()) > 0 ? Long.parseLong(venue.get("capacity").toString()) : 0L;
                 if (capacity == 0L) countOfNullFields++;
                 String typeVenueString = venue.get("type") != null ? venue.get("type").toString() : null;
-                VenueType typeVenue = typeVenueString != null ? VenueType.valueOf(typeVenueString) : null;
+                VenueType typeVenue = typeVenueString != null ? VenueType.valueOf(typeVenueString.toUpperCase()) : null;
                 if (typeVenue == null) countOfNullFields++;
+
+                System.out.println(countOfNullFields);
 
 
                 if (countOfNullFields != 0)
-                    throw new NullValueException(String.format("Есть пустое поле- продукт не будет собран  "), null);
+                    throw new NullValueException(String.format("Есть пустое поле - продукт не будет собран  "), null);
 
                 else {
                     peopleTable.put(id, new Ticket(id, name, new Coordinates(x, y), creationDate, price, discount, refundable, type, new Venue(idVenue, nameVenue, capacity, typeVenue)));

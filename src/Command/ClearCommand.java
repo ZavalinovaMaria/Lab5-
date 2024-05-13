@@ -23,4 +23,8 @@ public class ClearCommand implements Command{
     public String description() {
         return "clear: очистить коллекцию";
     }
+    @Override
+    public String toString() {
+        return "clear";
+    }
 }

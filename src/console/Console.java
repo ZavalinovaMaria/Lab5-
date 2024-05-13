@@ -12,8 +12,9 @@ import java.util.*;
 public class Console {
     /* A field that refers to a HashMap with keys - command names and the possibility of calling them
      */
-    Map<String, Command> commands = new HashMap<>();
+    static Map<String, Command> commands = new HashMap<>();
     public static ArrayList<Integer> keyStoragee= new ArrayList<>();
+    public static String firstFilePath;
 
     /**
      * The starting point of the program. A method in which a database file is specified, commands are specified, and commands are entered.
@@ -24,13 +25,15 @@ public class Console {
         System.out.println("Enter the json file path");
         try {
             path = scanner.next();
+            firstFilePath = path;
+
         }
         catch (NoSuchElementException e){
             System.out.println("No line, exit from the program");
             return;
         }
         if (path.isEmpty()) {
-            System.out.println("You didn't indicated the json file");
+            System.out.println("Передан пустой файл");
             return;
         }
         FileReader reader = new FileReader();
@@ -50,7 +53,7 @@ public class Console {
         commands.put("info", new InfoCommand(commandCatalog));
         commands.put("insert", new InsertCommand(commandCatalog));
         commands.put("remove_key", new RemoveKeyCommand(commandCatalog));
-        commands.put("execute_script_file_name", new ExecuteScriptCommand(commandCatalog));
+        commands.put("execute_script", new ExecuteScriptCommand(commandCatalog));
         commands.put("remove_lower", new RemoveLowerCommand(commandCatalog));
         commands.put("remove_lower_key", new RemoveLowerKeyCommand(commandCatalog));
         commands.put("history", new HistoryCommand(commandCatalog));
@@ -75,7 +78,6 @@ public class Console {
             commandCatalog.setTokens(tokens);
             Command command = commands.get(tokens[0]);
             try {
-
                 command.execute();
                 commandCatalog.addToHistory(String.valueOf(command));
             } catch (NullPointerException e) {

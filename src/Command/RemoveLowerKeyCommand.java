@@ -12,4 +12,8 @@ public class RemoveLowerKeyCommand implements Command{
     public String description() {
         return "removeLowerKey : удалить из коллекции все элементы,меньшие,чем заданный";
     }
+    @Override
+    public String toString() {
+        return "remove_lower_key";
+    }
 }

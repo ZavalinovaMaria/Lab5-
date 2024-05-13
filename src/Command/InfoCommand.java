@@ -14,4 +14,8 @@ public class InfoCommand implements Command{
     public String description() {
         return "info : вывести в стандартный поток вывода информацию о коллекции";
     }
+    @Override
+    public String toString() {
+        return "info";
+    }
 }

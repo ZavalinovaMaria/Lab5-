@@ -13,7 +13,7 @@ public class ExecuteScriptCommand implements Command{
     }
     @Override
     public void execute(){
-       // commandCatalog.executeScript();
+        commandCatalog.executeScript();
     }
     /**
      * Method that returns command description
@@ -22,5 +22,9 @@ public class ExecuteScriptCommand implements Command{
     @Override
     public String description() {
         return "executeScript: считать и исполнить скрипт из указанного файла. В скрипте содержатся команды в таком же виде, в котором их вводит пользователь в интерактивном режиме.";
+    }
+    @Override
+    public String toString() {
+        return "execute_script";
     }
 }

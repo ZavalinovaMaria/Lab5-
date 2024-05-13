@@ -16,4 +16,8 @@ public class FilterContainsNameCommand implements Command {
     public String description() {
         return "filterContainsName : вывести элеменеты, значения поля name которых содержит заданную построку";
     }
+    @Override
+    public String toString() {
+        return "filter_contains_name";
+    }
 }

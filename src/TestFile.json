@@ -1,22 +1,4 @@
-[{
-  "id": 4,
-  "name": " ",
-  "coordinates": {
-    "x": 10,
-    "y": 20
-  },
-  "creationDate": "2024-04-26T10:15:30Z",
-  "price": 100.0,
-  "discount": 10,
-  "refundable": " ",
-  "type": "VIP",
-  "venue": {
-    "id": 15,
-    "name": "venue 1",
-    "capacity": 239,
-    "type": "MALL"
-  }
-},
+[
   {
     "id": 1,
     "name": "Product 1",
@@ -37,8 +19,8 @@
     }
   },
   {
-    "id":  65,
-    "name": " gub",
+    "id": 3405,
+    "name": "skfgmb",
     "coordinates": {
       "x": -14,
       "y": "dfkmjv"
@@ -71,25 +53,6 @@
       "name": "venue 3",
       "capacity": 369,
       "type": "BAR"
-    }
-    },
-  {
-    "id": 5,
-    "name": " ",
-    "coordinates": {
-      "x": 10,
-      "y": 20
-    },
-    "creationDate": "2024-04-26T10:15:30Z",
-    "price": 100.0,
-    "discount": 10,
-    "refundable": " ",
-    "type": "VIP",
-    "venue": {
-      "id": 15,
-      "name": "venue 1",
-      "capacity": 239,
-      "type": "MALL"
     }
   }
 ]

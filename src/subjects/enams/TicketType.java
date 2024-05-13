@@ -1,10 +1,10 @@
 package subjects.enams;
 
 public enum TicketType {
-    VIP("vip"),
-    USUAL("usual"),
-    BUTGETARY("budgetary"),
-    CHEAP("cheap");
+    VIP("VIP"),
+    USUAL("USUAL"),
+    BUTGETARY("BUTGETARY"),
+    CHEAP("CHEAP");
     public String name;
     TicketType(String name){
         this.name = name;
@@ -12,7 +12,6 @@ public enum TicketType {
 
     @Override
     public String toString(){
-        return "=" +name +
-                '}';
+        return name;
     }
 }

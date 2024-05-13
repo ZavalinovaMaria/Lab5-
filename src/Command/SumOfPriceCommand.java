@@ -16,5 +16,9 @@ public class SumOfPriceCommand implements Command{
     public String description() {
         return "sumOfPrice : вывести сумму значений поля price всех элеменетов коллекции";
     }
+    @Override
+    public String toString() {
+        return "sum_of_price";
+    }
 
 }

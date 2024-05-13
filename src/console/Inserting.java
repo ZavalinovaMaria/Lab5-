@@ -14,24 +14,37 @@ import java.util.concurrent.Callable;
 
 public class Inserting implements Checking {
     Scanner scanner = new Scanner(System.in);
-    String[] output = new String[4];
+    String[] output = new String[12];
+    String [] commandsScript = new String[11];
     Ticket ticket;
 
-    public Ticket toBuildTicket() {
+
+    public Ticket toBuildTicket(String[] commands) {
         Ticket ticket = new Ticket();
-        ticket.setId(createKey());
-        ticket.setName(createName());
-        ticket.setCoordinates(new Coordinates(createX(), createY()));
+        ticket.setId(Integer.parseInt(commands[0]));
+        ticket.setName(commands[1]);
+        ticket.setCoordinates(new Coordinates(Float.parseFloat(commands[2]), Float.parseFloat(commands[3])));
         ticket.setCreationDate(ZonedDateTime.now());
-        ticket.setPrice(createPrice());
-        ticket.setDiscount(createDiscount());
-        ticket.setRefundable(createRefundable());
-        ticket.setType(TicketType.valueOf(createTicketType().toUpperCase()));
-        ticket.setVenue(createVenue());
+        ticket.setPrice(Float.parseFloat(commands[4]));
+        ticket.setDiscount(Double.parseDouble(commands[5]));
+        ticket.setRefundable(Boolean.parseBoolean(commands[6]));
+        ticket.setType(TicketType.valueOf(commands[7].toUpperCase()));
+        ticket.setVenue(new Venue(Integer.parseInt(output[8]),output[9],Long.parseLong(output[10]),VenueType.valueOf(output[11])));
         return ticket;
+    }
+    public void toUpdateTicket(Ticket ticket,String[ ]commands) {
+        ticket.setName(commands[1]);
+        ticket.setCoordinates(new Coordinates(Float.parseFloat(commands[2]), Float.parseFloat(commands[3])));
+        ticket.setCreationDate(ZonedDateTime.now());
+        ticket.setPrice(Float.parseFloat(commands[4]));
+        ticket.setDiscount(Double.parseDouble(commands[5]));
+        ticket.setRefundable(Boolean.parseBoolean(commands[6]));
+        ticket.setType(TicketType.valueOf(commands[7].toUpperCase()));
+        ticket.setVenue(new Venue(Integer.parseInt(output[8]),output[9],Long.parseLong(output[10]),VenueType.valueOf(output[11])));
+
 
     }
-    public void toUpdateTicket(Ticket ticket) {
+        /*
         ticket.setName(createName());
         ticket.setCoordinates(new Coordinates(createX(), createY()));
         ticket.setCreationDate(ZonedDateTime.now());
@@ -40,89 +53,68 @@ public class Inserting implements Checking {
         ticket.setRefundable(createRefundable());
         ticket.setType(TicketType.valueOf(createTicketType().toUpperCase()));
         ticket.setVenue(createVenue());
-
     }
 
+         */
     public Venue toBuildVenue(String[] output) {
         Venue venue = new Venue();
-        venue.setId(Integer.parseInt(output[0]));
-        venue.setName(output[1]);
-        venue.setCapacity(Long.parseLong(output[2]));
-        venue.setType(VenueType.valueOf(output[3]));
+        venue.setId(Integer.parseInt(output[8]));
+        venue.setName(output[9]);
+        venue.setCapacity(Long.parseLong(output[10]));
+        venue.setType(VenueType.valueOf(output[11]));
         return venue;
     }
 
 
-    public Integer createKey() {
+    public Ticket createTicket() {
+
         Integer keyValue = null;
-        while (true) {
-            try {
-                System.out.println("Enter key");
-                String value = scanner.nextLine();
-                keyValue = Integer.parseInt(value);
-                if (keyValue < 0) {
-                    System.out.println("Key can't be null or отрицательный ");
-                } else {
-                    checkUniqueness(keyValue);
-                    break; //возвращает первый ключ который ввели
+            while (true) {
+                try {
+                    System.out.println("Enter key");
+                    String value = scanner.nextLine();
+                     keyValue = Integer.parseInt(value);
+                    if (keyValue < 0) {
+                        System.out.println("Key can't be null or отрицательный ");
+                    } else {
+                        checkUniqueness(keyValue);
+                        output[0] = value;
+                        break;
+                    }
+
+                } catch (NumberFormatException e) {
+                    System.out.println("Key must be numbers");
+                    continue;
+                } catch (NotUniqueValueException e) {
+                    System.out.println(e.getMessage());
+                    continue;
                 }
-
-            } catch (NumberFormatException e) {
-                System.out.println("Key must be numbers");
-                continue;
-            }catch (NotUniqueValueException e) {
-                System.out.println(e.getMessage());
-                continue; // Повторяем цикл при неправильном вводе
             }
-        }
-        return keyValue;
-
-    }
-    @Override
-    public void checkUniqueness(Integer value) throws NotUniqueValueException {
-        if(keyStoragee.contains(value)) throw new NotUniqueValueException(String.format("Элемент с ключом со значением %s уже существует ", value));
-
-        else keyStoragee.add(value);
-    }
-    // по моему можно удалить тк тут он не нужен, а в коллекции не используется вообще
-    public void addNewKey(Integer key){
-        try {
-            checkUniqueness(key);
-        }
-        catch (NotUniqueValueException e ){
-            System.out.println(e.getMessage());
-        }
-    }
 
 
-    public String createName() {
         while (true) {
             System.out.println("Enter name");
             String name = scanner.nextLine().trim();
-            if (name == null  | name.isEmpty()) {
+            if (name == null | name.isEmpty()) {
                 System.out.println("Name can't be null");
             } else {
-                return name;
+                output[1] = name;
+                break;
+
             }
         }
-    }
-
-    public float createX() {
         while (true) {
             try {
-                System.out.println("Enter x,");
+                System.out.println("Enter x");
                 String valueX = scanner.nextLine();
                 float x = Float.parseFloat(valueX);
-                return x;
+                output[2] = valueX;
+                break;
+
             } catch (NumberFormatException e) {
                 System.out.println("Coordinates must be numbers");
             }
-
         }
-    }
-
-    public float createY() {
-
         while (true) {
             try {
                 System.out.println("Enter y");
@@ -131,15 +123,13 @@ public class Inserting implements Checking {
                 if (valueY.isEmpty()) {
                     System.out.println("Y can't be null");
                 } else {
-                    return y;
+                    output[3] = valueY;
+                    break;
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Coordinates must be numbers");
             }
         }
-    }
-
-    public float createPrice() {
 
         while (true) {
             try {
@@ -149,15 +139,13 @@ public class Inserting implements Checking {
                 if (price < 0) {
                     System.out.println("Key can't be null or отрицательный ");
                 } else {
-                    return price;
+                    output[4]= valuePrice;
+                    break;
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Price must be numbers");
             }
         }
-    }
-
-    public double createDiscount() {
 
 
         while (true) {
@@ -168,33 +156,29 @@ public class Inserting implements Checking {
                 if (discount < 0 | discount > 100) {
                     System.out.println("Discount can't be >100 or <0 ");
                 } else {
-                    return discount;
+                    output[5] = valueDiscount;
+                    break;
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Discount must be numbers");
             }
         }
-    }
-
-
-    public boolean createRefundable() {
         while (true) {
             System.out.println("Enter refundable (true/false):");
-            String refundable = scanner.nextLine().trim().toLowerCase(); // Приводим к нижнему регистру и удаляем лишние пробелы
+            String refundable = scanner.nextLine().trim().toLowerCase();
 
             if (refundable.equals("true")) {
-                return true;
+                output[6] = "true";
+                break;
             } else if (refundable.equals("false")) {
-                return false;
+                output[6] = "false";
+                break;
             } else {
                 System.out.println("Refundable must be 'true' or 'false'");
             }
         }
-    }
 
-
-    public String createTicketType() {
-        String output = null;
+        String out = null;
         System.out.println("Choose type of ticket: ");
         System.out.println("1.VIP");
         System.out.println("2.USUAL");
@@ -210,7 +194,7 @@ public class Inserting implements Checking {
             firstInput = false;
             for (TicketType type : TicketType.values()) {
                 if (typeTicket.equalsIgnoreCase(type.name)) {
-                    output = typeTicket;
+                    out = typeTicket;
                     check = false;
                     break;
                 }
@@ -219,18 +203,11 @@ public class Inserting implements Checking {
                 System.out.println("You entered the wrong name");
             }
         }
+        output[7] = out;
 
-
-        return output;
-    }
-
-
-
-
-    public Venue createVenue() {
         Random random = new Random();
         Integer valueId = random.nextInt(100000)+1;
-        output[0] = String.valueOf(valueId);
+        output[8] = String.valueOf(valueId);
 
         while (true) {
             System.out.println("Enter Venue name");
@@ -238,7 +215,7 @@ public class Inserting implements Checking {
             if (nameVenue == null | nameVenue.isEmpty()) {
                 System.out.println("Name can't be null");
             } else {
-                output[1] = nameVenue;
+                output[9] = nameVenue;
                 break;
             }
         }
@@ -250,7 +227,7 @@ public class Inserting implements Checking {
                 if (capacity <= 0) {
                     System.out.println("Capacity must be more than 0");
                 } else {
-                    output[2] = valueCapacity;
+                    output[10] = valueCapacity;
                     break;
                 }
             } catch (NumberFormatException e) {
@@ -267,7 +244,7 @@ public class Inserting implements Checking {
             String typeVenue = scanner.nextLine().trim().toUpperCase();
             for (VenueType type : VenueType.values()) {
                 if (typeVenue.equalsIgnoreCase(type.name)) {
-                    output[3] = typeVenue;
+                    output[11] = typeVenue;
                     check2 = false;
                     break;
                 }
@@ -277,11 +254,26 @@ public class Inserting implements Checking {
             }
 
         }
-        return toBuildVenue(output);
-        //Price Discount написать, потом протестить, скопировать в lab4   метод ниже аскоментить и проверить что работает
+        return toBuildTicket(output);
+
 
     }
 
+    @Override
+    public void checkUniqueness(Integer value) throws NotUniqueValueException {
+        if(keyStoragee.contains(value)) throw new NotUniqueValueException(String.format("Элемент с ключом со значением %s уже существует ", value));
+
+        else keyStoragee.add(value);
+    }
+
+    public void addNewKey(Integer key){
+        try {
+            checkUniqueness(key);
+        }
+        catch (NotUniqueValueException e ){
+            System.out.println(e.getMessage());
+        }
+    }
 
 
 }
