@@ -41,7 +41,7 @@ public class ScriptManager {
                         tokens[i].equalsIgnoreCase("remove_lower_key") ||
                         tokens[i].equalsIgnoreCase("filter_contains_name")) {
                     commandCatalog.setCompositeCommand(Arrays.copyOfRange(tokens, i + 1, tokens.length));
-                    System.out.println("ehhhf");
+
                 }
                 boolean isTokenCommand = commands.containsKey(tokens[i]);
                 if (!isTokenCommand) {
@@ -74,20 +74,8 @@ public class ScriptManager {
      *
      * @return Command array
      */
-    /*private String[] scriptToTokens() {
-        try (Scanner scanner = new Scanner(script)) {
-            StringBuilder stringBuilder = new StringBuilder();
-            while (scanner.hasNextLine()) {
-                stringBuilder.append(scanner.nextLine().replaceAll("[\\r\\n]", " "));
-            }
-            return stringBuilder.toString().split(" ");
-        } catch (FileNotFoundException e) {
-            System.out.println("File not found");
-        }
-        return new String[0];
-    }
 
-     */
+
 
 
     /**

@@ -52,8 +52,8 @@ public class Venue {
 
     @Override
     public String toString(){
-        return "Ticket{id=" +id+","+ ", name='" + name + '\'' + ", capacity=" + capacity +
-                ", type=" + type +
+        return "Ticket{ id=" +id+","+ '\n'+" name='" + name + '\'' + '\n'+" capacity=" + capacity +'\n'+
+                " type=" + type +
                 '}';
     }
 }

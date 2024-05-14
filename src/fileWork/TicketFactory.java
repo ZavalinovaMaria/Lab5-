@@ -14,20 +14,6 @@ import java.time.ZonedDateTime;
 import java.util.Hashtable;
 
 
-
-/*
-        public static void setName (String filename){
-            path = filename;
-        }
-
-        public static String getName () {
-            path = System.getenv("test");
-            return path;
-        }
-
-
-} */
-
 class TicketFactory {
     public static Hashtable<Integer, Ticket> createTicket(JSONArray jsonArray) {
         Hashtable<Integer, Ticket> peopleTable = new Hashtable<>();
@@ -99,7 +85,6 @@ class TicketFactory {
                 else {
                     peopleTable.put(id, new Ticket(id, name, new Coordinates(x, y), creationDate, price, discount, refundable, type, new Venue(idVenue, nameVenue, capacity, typeVenue)));
                 }
-
 
             } catch (NumberFormatException e1) {
                 System.out.println("Есть поле с некорректным форматом числа-продукт не будет собран ");

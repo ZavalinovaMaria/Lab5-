@@ -33,7 +33,7 @@ public class FileReader  {
     public Hashtable<Integer, Ticket> read(String filePath) {
         Hashtable<Integer, Ticket> peop = new Hashtable<>();
         try (Scanner reader = new Scanner(new File(filePath))) {
-            StringBuilder jsonContent = new StringBuilder();
+            //StringBuilder jsonContent = new StringBuilder();
             while (reader.hasNextLine()) {
                 jsonContent.append(reader.nextLine());
             }
@@ -57,20 +57,9 @@ public class FileReader  {
         return peop;
     }
 
-
-
-/*
-        public static void setName (String filename){
-            path = filename;
-        }
-
-        public static String getName () {
-            path = System.getenv("test");
-            return path;
-        }
-
- */
-
-
 }
+
+
+
+
 

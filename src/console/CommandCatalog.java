@@ -134,12 +134,7 @@ public class CommandCatalog {
             } catch (ArrayIndexOutOfBoundsException e) {
                 System.out.println("Please, enter the file name in the command");
             }
-
         }
-
-
-
-
 
     public void printFieldDescendingDiscount() {
         List<Ticket> sortable = new ArrayList<>(collection.getCollection().values());
@@ -166,8 +161,9 @@ public class CommandCatalog {
             while (iterator.hasNext()) {
                 Ticket ticket = iterator.next();
                 if (ticket.getId() < key) {
-                    iterator.remove();
                     collection.deleteKey(ticket.getId());
+                    iterator.remove();
+                   // collection.deleteKey(ticket.getId());
                 }
             }
             collection.updateData();
@@ -278,65 +274,72 @@ public class CommandCatalog {
     writer.writeToFile(collection, filePath);
 }
 
-
+//дааа но надо прочекать когда поменяет цифры в вводе
     public void insert() {
         if(isScriptWorking){
             try {
                 Ticket newTicket = insert.toBuildTicket(compositeCommand);
-                if(insert.checkingUniqueness(newTicket.getId())){
-                    collection.addNewKey(newTicket.getId());
-                    collection.getCollection().put(newTicket.getId(), newTicket);}
+                if(!insert.checkingUniqueness(newTicket.getId()) && !insert.checkingIdUniqueness(newTicket.getVenue().getId())){
+                    collection.getCollection().put(newTicket.getId(), newTicket);
+                    //добавить
+                    clearCompositeCommand();
+                }
+                else{
+                    System.out.println("помойка");
+                }
             }catch (NumberFormatException E){
                 System.out.println("Ошибка заполнения полей ");
             } catch (NotUniqueValueException e) {
-            System.out.println("Элемент с таким id уже есть в коллекции");
+            System.out.println(e.getMessage());
         }
 
         }else{
         Ticket newTicket = insert.createTicket();
-        collection.getCollection().put(newTicket.getId(), newTicket);}
+        collection.getCollection().put(newTicket.getId(), newTicket);
+        }
         collection.updateData();
-        System.out.println("Новый элемент добавлен в коллекцию");
+
     }
-//сделать в методе ниже разный вывод текста Ж сейчас в любом случае выведет что элемент удален даже если его нет НО все работает
+///daaa
     public void removeKey() {
             try {
                 Integer key;
                 if(isScriptWorking){
                     key = Integer.parseInt(compositeCommand[0]);
+                    //compositeCommand = Arrays.copyOfRange(compositeCommand, 1, compositeCommand.length);
                     clearCompositeCommand();
                 }else{
-                key = Integer.parseInt(tokens[1]);
+                key = Integer.parseInt(tokens[1]);}
                 collection.deleteKey(key);
                 collection.getCollection().remove(key);
                 collection.updateData();
-
-            }} catch (NumberFormatException e) {
+                System.out.println("Элемент удален");
+            } catch (NumberFormatException e) {
                 System.out.println("Ключ должен быть числом ");
             }
         }
 
-
+//переделать, продумать логику : не работает тк массив строк нет ввода значений(команды) обект билдится из строк в случае скрипта они есть а для обычного решима их нет
         public void updateId () {
             try {
                 Integer id;
                 if(isScriptWorking){
+                    System.out.println("1");
                     id = Integer.parseInt(compositeCommand[0]);
                     clearCompositeCommand();
                 }else{
                 id = Integer.parseInt(tokens[1]);}
                 if (collection.checkingExistence(id)) {
                     insert.toUpdateTicket(collection.getCollection().get(id),compositeCommand);
+
                     System.out.println("Значение элемента успешно обновлено");
                 }
-
             } catch (NumberFormatException e) {
                 System.out.println("Id должен быть числом ");
             }
             catch (NotExistingValueException e){
                 System.out.println("Элемент с подобным ключем не обнаружен ");
             }
-
         }
 
         public void sumOfPrice () {

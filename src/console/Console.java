@@ -14,6 +14,7 @@ public class Console {
      */
     static Map<String, Command> commands = new HashMap<>();
     public static ArrayList<Integer> keyStoragee= new ArrayList<>();
+    public static ArrayList<Integer> idVenueStorage = new ArrayList<>();
     public static String firstFilePath;
 
     /**
@@ -40,8 +41,11 @@ public class Console {
         Writer writer = new Writer();
         Inserting insert = new Inserting();
         keyStoragee = new ArrayList<>();
+        idVenueStorage = new ArrayList<>();
         TicketCollection collection = new TicketCollection(reader.read(path));
         CommandCatalog commandCatalog = new CommandCatalog(collection, reader,writer, insert, commands);
+        System.out.println(idVenueStorage);
+        System.out.println(keyStoragee);
 
 
         commands.put("help", new HelpCommand(commandCatalog));

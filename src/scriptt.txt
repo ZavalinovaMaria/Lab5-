@@ -1,7 +1,6 @@
 info
-help
-insert
-5
+remove_key
+8
 nana
 4
 5
@@ -9,10 +8,9 @@ nana
 10
 true
 VIP
-9
+56
 ven
 77
 MALL
-show
-info
+remove_lower_key 8
 

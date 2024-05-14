@@ -4,18 +4,13 @@ import exceptions.NotUniqueValueException;
 import exceptions.NotExistingValueException;
 
 import subjects.Ticket;
-//import exceptions.*;
+
 
 import java.util.*;
 
 
 public class TicketCollection implements Checking  {
-    //класс коллекция продукта
     private Hashtable<Integer, Ticket> tickets;
-
-
-
-
     private Date initializationDate;
     private String type;
     private int countOfElements;
@@ -31,6 +26,10 @@ public class TicketCollection implements Checking  {
         internalFileType = "Ticket";
         countOfElements = tickets.size();
         initializationDate = new Date();
+        for (Ticket ticket : tickets.values()){
+            addNewVenueId(ticket.getVenue().getId());
+            System.out.println(ticket.getVenue().getId());
+        }
         for(Integer key:tickets.keySet()){
             addNewKey(key);
         }
@@ -83,15 +82,8 @@ public class TicketCollection implements Checking  {
 
 
 
-    @Override
-    public void addNewKey(Integer key){
-        try{
-            checkUniqueness(key);
-        }
-        catch (NotUniqueValueException e){
-            System.out.println(e.getMessage());
-        }
-    }
+
+
 
 
 

@@ -94,12 +94,12 @@ public  class Ticket implements Comparable<Ticket> {
         return this.id.compareTo(ticket.id);}
     @Override
     public String toString(){
-        return "Ticket{id=" +id+","+ ", name='" + name + '\'' + ", coordinates=" + coordinates +
-                ", creationDate=" + creationDate + ", price=" + price +
-                ", price='" + price + '\'' +
-                ", discount=" + discount +
-                ", type=" + type +
-                ", venue=" + venue +
+        return "Ticket{ id=" +id+'\n'+ " name='" + name + '\'' +'\n' + " coordinates=" + coordinates + '\n' +
+                " creationDate=" + creationDate + '\n'+ " price=" + price +'\n'+
+                " price='" + price + '\'' +'\n'+
+                " discount=" + discount +'\n'+
+                " type=" + type +'\n'+
+                " venue=" + venue +'\n'+
                 '}';
     }
 }
