@@ -17,8 +17,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
-import static console.Console.firstFilePath;
-import static console.Console.commands;
+import static console.Console.*;
 
 public class CommandCatalog {
     private final FileReader reader;
@@ -93,7 +92,7 @@ public class CommandCatalog {
     public void history() {
             if (commandHistory.isEmpty()) {
                 System.out.println("История команд пуста");
-                return; // завершение метода
+                return;
             }
             for (String command : commandHistory.subList(Math.max(commandHistory.size() - 13, 0), commandHistory.size())) {
                 System.out.println(command);
@@ -281,7 +280,8 @@ public class CommandCatalog {
                 Ticket newTicket = insert.toBuildTicket(compositeCommand);
                 if(!insert.checkingUniqueness(newTicket.getId()) && !insert.checkingIdUniqueness(newTicket.getVenue().getId())){
                     collection.getCollection().put(newTicket.getId(), newTicket);
-                    //добавить
+                    keyStoragee.add(newTicket.getId());
+                    idVenueStorage.add(newTicket.getVenue().getId());
                     clearCompositeCommand();
                 }
                 else{
@@ -319,18 +319,23 @@ public class CommandCatalog {
             }
         }
 
-//переделать, продумать логику : не работает тк массив строк нет ввода значений(команды) обект билдится из строк в случае скрипта они есть а для обычного решима их нет
+//сделать проверку/исключение для обновления если есть у venue id для скрипта
         public void updateId () {
             try {
                 Integer id;
                 if(isScriptWorking){
                     System.out.println("1");
                     id = Integer.parseInt(compositeCommand[0]);
-                    clearCompositeCommand();
+
+                    if (collection.checkingExistence(id)) {
+                        insert.toBuildUpdationTicket(collection.getCollection().get(id),compositeCommand);
+                        idVenueStorage.add(collection.getCollection().get(id).getVenue().getId());
+                        clearCompositeCommand();
+                    }
                 }else{
                 id = Integer.parseInt(tokens[1]);}
                 if (collection.checkingExistence(id)) {
-                    insert.toUpdateTicket(collection.getCollection().get(id),compositeCommand);
+                    insert.toUpdateTicket(collection.getCollection().get(id));
 
                     System.out.println("Значение элемента успешно обновлено");
                 }

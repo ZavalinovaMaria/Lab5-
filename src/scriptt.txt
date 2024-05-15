@@ -1,16 +1,15 @@
 info
-remove_key
-8
-nana
-4
-5
-44
+show
+update_id 1
+fsa
+1
+1
+666
 10
-true
-VIP
-56
-ven
-77
-MALL
-remove_lower_key 8
-
+false
+vip
+55
+tr
+32
+mall
+info
