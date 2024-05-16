@@ -7,10 +7,12 @@ public class RemoveKeyCommand implements Command{
      * A field that refers to an object with implementations of all commands
      */
     CommandCatalog commandCatalog;
-
     public RemoveKeyCommand(CommandCatalog commandCatalog) {
         this.commandCatalog = commandCatalog;
     }
+    /**
+     * The command that calls the required method from {@link CommandCatalog}
+     */
     @Override
     public void execute(){
         commandCatalog.removeKey();
@@ -21,7 +23,7 @@ public class RemoveKeyCommand implements Command{
      */
     @Override
     public String description() {
-        return "removeKey: удалить элемент из коллекции по его ключу";
+        return "remove_key {key}: удалить элемент из коллекции по его ключу";
     }
     @Override
     public String toString() {

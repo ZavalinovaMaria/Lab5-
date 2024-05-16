@@ -9,4 +9,5 @@ public class Main {
 
     // /Users/mariazavalinova/Desktop/proga/lab4/src/test.json
     //   execute_script /Users/mariazavalinova/Desktop/proga/lab4/src/scriptt.txt   execute_script
+    //    /Users/mariazavalinova/Desktop/proga/lab4/src/te.json
 }

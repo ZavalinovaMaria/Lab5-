@@ -1,15 +1,59 @@
 info
 show
-update_id 1
-fsa
+/hdansfowq4
+insert
+11
+Mpa
 1
 1
 666
 10
 false
 vip
-55
+115
 tr
 32
 mall
+insert
+3
+ttt
+1
+1
+666
+10
+false
+vip
+1
+tr
+32
+mall
+insert
+8
+Maee
+1
+1
+666
+10
+false
+vip
+9
+tr
+32
+bar
+
+filter_contains_name
+a
+remove_key 7
+
+remove_key 11
 info
+show
+remove_lower 11
+remove_lower 8
+show
+filter_contains_name
+info
+save
+execute_script
+execute_script /Users/mariazavalinova/Desktop/proga/lab4/src/scriptt.txt
+execute_script /Users/mariazavalinova/Desktop/proga/lab4/src/scrip.txt

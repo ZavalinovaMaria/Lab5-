@@ -5,9 +5,8 @@ public interface Command {
      * Command execution method
      */
     void execute();
-
     /**
-     * Method returning description
+     * Method that return description
      * @return Command description
      */
     String description();

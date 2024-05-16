@@ -8,10 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class Writer {
-    //TicketCollection collection;
-    //JSONArray jsonArray = new JSONArray();
     String filePath;
-
     public Writer() {
     }
 
@@ -39,12 +36,11 @@ public class Writer {
                 venueObject.put("name", ticket.getVenue().getName());
                 venueObject.put("capacity", ticket.getVenue().getCapacity());
                 venueObject.put("type", ticket.getVenue().getType().toString());
-
                 jsonArray.add(jsonObject);
             }
 
         } catch (NullPointerException e) {
-            System.out.println("что то пошло не так ");
+            System.out.println("что-то пошло не так ");
         }
         return jsonArray;
     }
@@ -60,8 +56,6 @@ public class Writer {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-
     }
 }
 

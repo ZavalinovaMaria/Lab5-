@@ -11,6 +11,9 @@ public class SaveCommand implements Command{
     public SaveCommand(CommandCatalog commandCatalog) {
         this.commandCatalog = commandCatalog;
     }
+    /**
+     * The command that calls the required method from {@link CommandCatalog}
+     */
     @Override
     public void execute(){
         commandCatalog.save();

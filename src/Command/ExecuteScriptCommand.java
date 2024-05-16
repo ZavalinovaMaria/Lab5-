@@ -7,10 +7,12 @@ public class ExecuteScriptCommand implements Command{
      * A field that refers to an object with implementations of all commands
      */
     CommandCatalog commandCatalog;
-
     public ExecuteScriptCommand(CommandCatalog commandCatalog) {
         this.commandCatalog = commandCatalog;
     }
+    /**
+     * The command that calls the required method from {@link CommandCatalog}
+     */
     @Override
     public void execute(){
         commandCatalog.executeScript();
@@ -21,7 +23,7 @@ public class ExecuteScriptCommand implements Command{
      */
     @Override
     public String description() {
-        return "executeScript: считать и исполнить скрипт из указанного файла. В скрипте содержатся команды в таком же виде, в котором их вводит пользователь в интерактивном режиме.";
+        return "execute_script {file}: считать и исполнить скрипт из указанного файла. В скрипте содержатся команды в таком же виде, в котором их вводит пользователь в интерактивном режиме.";
     }
     @Override
     public String toString() {

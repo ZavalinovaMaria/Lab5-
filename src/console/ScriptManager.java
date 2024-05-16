@@ -61,30 +61,13 @@ public class ScriptManager {
             reader.close();
             return getStrings(inputChar);
         } catch (FileNotFoundException e) {
-            System.out.println("File not found");
+            System.out.println("Файл не обнаружен");
             return new String[0];
         } catch (IOException e) {
             System.out.println("IO exception");
             return new String[0];
         }
     }
-
-    /**
-     * A method that reads a script file and converts it to a char array and return result of the {@link ScriptManager#getStrings(char[])}
-     *
-     * @return Command array
-     */
-
-
-
-
-    /**
-     * Private method that turns an array of characters into an array of strings with individual commands
-     *
-     * @param inputChar An array of characters read from a file with a script method{@link ScriptManager#scriptToTokens()}
-     * @return Command array
-     */
-
 
     private static String[] getStrings(char[] inputChar) {
         List<String> tokens = new ArrayList<>();
@@ -105,26 +88,5 @@ public class ScriptManager {
         }
         return tokens.toArray(new String[0]);
     }
-        /*
-        for (int i = 0; i < inputChar.length; i++) {
-            if (inputChar[i] == '\0') {
-                break;
-            }
-            if (inputChar[i] == '\r') {
-                charBuilder.append(" ");
-                continue;
-            }
-            if (inputChar[i] == '\n') {
-                continue;
-            }
-            charBuilder.append(inputChar[i]);
-        }
-        String result = String.valueOf(charBuilder);
-        String[] tokens = result.split(" ");
-        System.out.println(tokens.toString());
-        return tokens;
-    }
-
-         */
 
 }

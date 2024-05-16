@@ -1,6 +1,9 @@
 package subjects.enams;
 
 public enum VenueType {
+    /**
+     * Enum representing the venue`s type.
+     */
     BAR("BAR"),
     CINEMA("CINEMA"),
     MALL("MALL"),

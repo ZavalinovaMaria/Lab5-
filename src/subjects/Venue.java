@@ -3,12 +3,23 @@ package subjects;
 import subjects.enams.VenueType;
 
 public class Venue {
-
+    /**
+     * A class representing venue.
+     */
     private Integer id; //Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
-
     private String name; //Поле не может быть null, Строка не может быть пустой
     private Long capacity; //Поле может быть null, Значение поля должно быть больше 0
     private VenueType type; //Поле не может быть null
+
+    /**
+     *Creates a new venue instance.
+     *
+     * @param id        venue`s id
+     * @param name   venue`s name
+     * @param type venue`s type
+     * @param capacity    venue`s capacity
+     */
+
     public Venue( Integer id,String name,Long capacity,VenueType type){
         this.id = id;
         this.name = name;
@@ -52,7 +63,7 @@ public class Venue {
 
     @Override
     public String toString(){
-        return "Ticket{ id=" +id+","+ '\n'+" name='" + name + '\'' + '\n'+" capacity=" + capacity +'\n'+
+        return "{ id=" +id+","+ '\n'+" name='" + name + '\'' + '\n'+" capacity=" + capacity +'\n'+
                 " type=" + type +
                 '}';
     }

@@ -1,7 +1,5 @@
 package fileWork;
 
-
-import exceptions.FormatException;
 import exceptions.NullValueException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -34,7 +32,7 @@ class TicketFactory {
                 if (y == 0.0f) countOfNullFields++;
                 if (coordinatesString == null) countOfNullFields++;
 
-                System.out.println(countOfNullFields);
+
 
                 String creationDateString = (String) jsonObject.get("creationDate");
                 ZonedDateTime creationDate = creationDateString != null ? ZonedDateTime.parse(creationDateString) : null;
@@ -47,7 +45,6 @@ class TicketFactory {
                         null;
                 if (discount == null) countOfNullFields++;
 
-                System.out.println(countOfNullFields);
 
                 String refundableObj = ((String) jsonObject.get("refundable")).trim().toLowerCase();
                 Boolean refundable = null;
@@ -63,8 +60,6 @@ class TicketFactory {
                 TicketType type = typeString != null ? TicketType.valueOf(typeString.toUpperCase()) : null;
                 if (typeString == null) countOfNullFields++;
 
-                System.out.println(countOfNullFields);
-
                 JSONObject venue = (JSONObject) jsonObject.get("venue");
                 Integer idVenue = venue.get("id") != null && Integer.parseInt(venue.get("id").toString()) > 0 ? Integer.parseInt(venue.get("id").toString()) : null;
                 if (idVenue == null) countOfNullFields++;
@@ -76,9 +71,6 @@ class TicketFactory {
                 VenueType typeVenue = typeVenueString != null ? VenueType.valueOf(typeVenueString.toUpperCase()) : null;
                 if (typeVenue == null) countOfNullFields++;
 
-                System.out.println(countOfNullFields);
-
-
                 if (countOfNullFields != 0)
                     throw new NullValueException(String.format("Есть пустое поле - продукт не будет собран  "), null);
 
@@ -87,7 +79,7 @@ class TicketFactory {
                 }
 
             } catch (NumberFormatException e1) {
-                System.out.println("Есть поле с некорректным форматом числа-продукт не будет собран ");
+                System.out.println("Есть поле с некорректным форматом числа - продукт не будет собран ");
 
             } catch (NullValueException e) {
                 System.out.println(e.getMessage());

@@ -7,7 +7,6 @@ public class ExitCommand implements Command {
      * A field that refers to an object with implementations of all commands
      */
     CommandCatalog commandCatalog;
-
     public ExitCommand(CommandCatalog commandCatalog) {
         this.commandCatalog = commandCatalog;
     }
