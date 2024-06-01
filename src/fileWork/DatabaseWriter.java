@@ -7,9 +7,9 @@ import subjects.Ticket;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class Writer {
+public class DatabaseWriter {
     String filePath;
-    public Writer() {
+    public DatabaseWriter() {
     }
 
     public JSONArray createJsonArray(TicketCollection collection) {

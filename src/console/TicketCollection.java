@@ -4,10 +4,11 @@ import exceptions.NotExistingValueException;
 import subjects.Ticket;
 import java.util.*;
 
+/**
+ * A class representing a collection of tickets.
+ */
 public class TicketCollection implements Checking  {
-    /**
-     * A class representing a collection of tickets.
-     */
+
     private Hashtable<Integer, Ticket> tickets;
     private Date initializationDate;
     private String type;

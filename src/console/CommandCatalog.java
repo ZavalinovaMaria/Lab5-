@@ -2,34 +2,56 @@ package console;
 import Command.*;
 import exceptions.NotExistingValueException;
 import exceptions.NotUniqueValueException;
-import fileWork.FileReader;
-import fileWork.Writer;
+//import fileWork.FileReader;
+import fileWork.DatabaseReader;
+import fileWork.DatabaseWriter;
 import subjects.*;
 import subjects.Сomporators.ComparatorDiscount;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 import static console.Console.*;
 
+/**
+ * A class that stores implementations of all program commands.
+ * It can work with commands both from the console and from a script,
+ * responsible for this {@link CommandCatalog#isScriptWorking}
+ */
 public class CommandCatalog {
-    private final FileReader reader;
+    private final DatabaseReader reader;
     private final Inserting insert;
-    private final Writer writer;
+    private final DatabaseWriter writer;
 
 
     private TicketCollection collection;
+    /**
+     * A field that refers to an object whose fields contain the collection with which the program works.
+     */
     private Set<String> scriptHistory = new HashSet<>();
-    //private Map<String, Command> commands;
+    /**
+     * A field that contains history of executed commands
+     */
     private final List<String> commandHistory = new ArrayList<>();
+    /**
+     * An array of strings into which an array of commands from the script is passed{@link ScriptManager#executeScript()}
+     */
 
     private String[] compositeCommand = new String[9];
-
+    /**
+     * A field that can be used to change the implementation of commands for working with a script
+     *
+     * @see CommandCatalog#executeScript()
+     */
     private boolean isScriptWorking = false;
-
+    /**
+     * String array to which commands are sent from the console
+     */
     private String[] tokens;
 
-    public CommandCatalog(TicketCollection collection, FileReader reader, Writer writer, Inserting insert, Map<String, Command> commands) {
+    public CommandCatalog(TicketCollection collection, DatabaseReader reader, DatabaseWriter writer, Inserting insert, Map<String, Command> commands) {
         this.collection = collection;
         this.reader = reader;
         this.writer = writer;
@@ -49,34 +71,53 @@ public class CommandCatalog {
         this.compositeCommand = compositeCommand;
     }
 
+    /**
+     * Command showing information about the current state of a collection {@link InfoCommand}
+     *
+     * @see TicketCollection
+     */
     public void info() {
         System.out.print("Информация о коллекции:");
         System.out.println(collection.toString());
     }
 
+    /**
+     * Command to call up descriptions of all commands{@link HelpCommand}
+     */
     public void help() {
         for (Command com : commands.values()) {
             System.out.println(com.description());
         }
     }
 
+    /**
+     * A command that prints to the console all objects in a collection and their fields {@link ShowCommand}
+     */
     public void show() {
         System.out.println("Коллекция: ");
         System.out.println(collection.getCollection());
 
     }
-
+    /**
+     * Command to exit the application {@link ExitCommand}
+     */
     public void exit() {
         System.out.println("Конец текущей сессии");
         System.exit(0);
     }
 
+    /**
+     * Command to clear a collection {@link ClearCommand}
+     */
     public void clear() {
         collection.getCollection().clear();
         collection.updateData();
         System.out.println("Коллекция пуста");
     }
 
+    /**
+     * Command to show last 13 commands {@link HistoryCommand}
+     */
     public void history() {
         if (commandHistory.isEmpty()) {
             System.out.println("История команд пуста");
@@ -87,6 +128,12 @@ public class CommandCatalog {
         }
         }
 
+
+    /**
+     * A command that creates an object of the {@link ScriptManager} class and starts the script process
+     *
+     * @see ExecuteScriptCommand
+     */
     public void executeScript() {
         try {
             File script;
@@ -123,7 +170,26 @@ public class CommandCatalog {
             System.out.println("Пожалуйста, введите имя файла");
         }
     }
+    /*private boolean canModifyProduct(long productId) {
+        String query = "SELECT createdBy FROM Product WHERE id = ?";
+        try (Connection connection = sqlConnection.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setLong(1, productId);
+            ResultSet resultSet = stmt.executeQuery();
+            if (resultSet.next()) {
+                String createdBy = resultSet.getString("createdBy");
+                return createdBy.equals(userManager.getUserName());
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
+     */
+    /**
+     * A command that allows you to print fields from collection descending discount {@link PrintFieldDescendingDiscountCommand}
+     */
     public void printFieldDescendingDiscount() {
         List<Ticket> sortable = new ArrayList<>(collection.getCollection().values());
         Comparator<Ticket> sortibility = new ComparatorDiscount();
@@ -135,6 +201,9 @@ public class CommandCatalog {
         }
     }
 
+    /**
+     * A command that allows you to remove elements smaller than the one specified by key {@link RemoveLowerKeyCommand}
+     */
     public void removeLowerKey() {
         try {
             Integer key;
@@ -144,6 +213,9 @@ public class CommandCatalog {
             } else {
                 key = Integer.parseInt(tokens[1]);
             }
+
+
+            //если можем модифицировать продукт
             Iterator<Ticket> iterator = collection.getCollection().values().iterator();
             while (iterator.hasNext()) {
                 Ticket ticket = iterator.next();
@@ -159,6 +231,9 @@ public class CommandCatalog {
         }
     }
 
+    /**
+     * A command that allows you to remove elements smaller than the one specified  {@link RemoveLowerCommand}
+     */
     public void removeLower() {
         try {
             Integer key;
@@ -190,77 +265,19 @@ public class CommandCatalog {
         }
     }
 
-    public void save() {
-        String filePath = null;
-        if(isScriptWorking){
-            filePath = firstFilePath;
-        }else{
-        String option;
-        System.out.println("Выберете место сохранения и введите соответствующую цифру:" +
-                "\n 1. Сохранить коллекцию в файл, из которого производили чтение" +
-                "\n 2.Сохранить коллекцию в другой файл" +
-                "\n 3. Создать новый файл и сохранить коллекцию туда ");
-        Scanner scanner = new Scanner(System.in);
-        while (true) {
-            option = scanner.nextLine();
-            if (option == null | option.isEmpty()) {
-                System.out.println("Необходимо выбрать параметр сохраненея,введите число 1 или 2 ");
-            }
-            if (!option.equals("1") && !option.equals("2") && !option.equals("3")) {
-                System.out.println("Необходимо ввести 1, 2 или 3");
-            } else {
-                break;
-            }
-        }
-        switch (option) {
-            case "1" -> filePath = firstFilePath;
-            case "2" -> {
-                System.out.println("Введите путь до файла, в который хотите сохранить коллекцию");
-                while (true) {
-                    try {
-                        String path = scanner.next();
-                        File file = new File(path);
-                        if (path == null || path.isEmpty()) {
-                            System.out.println("Пустой путь недопустим");
-                        }
-                        if (!file.exists()) {
-                            throw new FileNotFoundException("Файл не найден");
-                        } else {
-                            System.out.println("Путь к файлу успешно получен");
-                            filePath = path;
-                            break;
-                        }
-                    } catch (FileNotFoundException e) {
-                        System.out.println(e.getMessage());
-                    }
-                }
-            }
-            case "3" -> {
-                System.out.println("Введите путь, в котором хотите создать файл ");
-                while (true) {
-                    String path = scanner.next();
-                    File file = new File(path);
-                    if (path == null || path.isEmpty()) {
-                        System.out.println("Пустой путь недопустим");
-                    } else {
-                        System.out.println("Путь к файлу успешно получен");
-                        filePath = path;
-                        break;
-                    }
-                    try {
-                        if (file.createNewFile()) {
-                            System.out.println("Файл создан");
-                        }
-                    } catch (IOException e) {
-                        System.out.println("Ошибка при создании файла ");
-                    }
-                }
-            }
 
-        }}
-        writer.writeToFile(collection, filePath);
+    /**
+     * Command that saves the current collection instance to a file{@link SaveCommand}
+     *
+     * @see DatabaseWriter
+     */
+    public void save() {
+        writer.writeToFile(collection, firstFilePath);
     }
 
+    /**
+     * A command that allows you to insert a new object in the collection {@link InsertCommand}
+     */
     public void insert() {
         if (isScriptWorking) {
             try {
@@ -285,6 +302,9 @@ public class CommandCatalog {
         collection.updateData();
     }
 
+    /**
+     * A command that allows you to delete an object by its key {@link RemoveKeyCommand}
+     */
     public void removeKey() {
         System.out.println("Если исключение не выпало-элемент удален");
         try {
@@ -305,6 +325,9 @@ public class CommandCatalog {
         }
     }
 
+    /**
+     * A command that allows you to update an object with a given id {@link UpdateIdCommand}
+     */
     public void updateId() {
         try {
             Integer id;
@@ -331,6 +354,9 @@ public class CommandCatalog {
         }
     }
 
+    /**
+     * Command that allows you to count sum of price for all objects in collection{@link SumOfPriceCommand}
+     */
     public void sumOfPrice() {
         double totalPrice = 0;
         Collection<Ticket> values = collection.getCollection().values();
@@ -340,6 +366,10 @@ public class CommandCatalog {
         System.out.println("Сумма значений поля price для всех элементов коллекции: " + totalPrice);
     }
 
+
+    /**
+     * A command that removes items from a collection that have such name{@link FilterContainsNameCommand}
+     */
     public void filterContainsName() {
         String input;
         if (isScriptWorking) {

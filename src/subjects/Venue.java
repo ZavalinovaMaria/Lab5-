@@ -2,10 +2,11 @@ package subjects;
 
 import subjects.enams.VenueType;
 
+/**
+ * A class representing venue.
+ */
 public class Venue {
-    /**
-     * A class representing venue.
-     */
+
     private Integer id; //Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
     private String name; //Поле не может быть null, Строка не может быть пустой
     private Long capacity; //Поле может быть null, Значение поля должно быть больше 0

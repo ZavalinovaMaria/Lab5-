@@ -17,6 +17,12 @@ public class Inserting implements Checking {
     Scanner scanner = new Scanner(System.in);
     String[] output = new String[12];
 
+    /**
+     * Creates a Ticket class object based on an array of commands.
+     *
+     * @param commands An array of commands containing the data to create the Ticket object.
+     * @return Returns the created Ticket object.
+     */
     public Ticket toBuildTicket(String[] commands) {
         Ticket ticket = new Ticket();
         ticket.setId(Integer.parseInt(commands[0]));
@@ -30,6 +36,12 @@ public class Inserting implements Checking {
         ticket.setVenue(new Venue(Integer.parseInt(commands[8]), commands[9], Long.parseLong(commands[10]), VenueType.valueOf(commands[11].toUpperCase())));
         return ticket;
     }
+    /**
+     * Updates the fields of a Ticket object based on an array of commands.
+     *
+     * @param ticket The Ticket object to update.
+     * @param commands An array of commands containing data to update the Ticket object.
+     */
 
     public void toBuildUpdationTicket(Ticket ticket,String[] commands) {
         try{
@@ -48,6 +60,13 @@ public class Inserting implements Checking {
 
         }
     }
+    /**
+     * Updates the fields of the Ticket object.
+     * The method requests data from the user to update the fields of the Ticket object and
+     * uses the received data to update the corresponding fields of the object.
+     *
+     * @param ticket The Ticket object to update.
+     */
     public void toUpdateTicket(Ticket ticket){
         ticket.setName(createName());
         ticket.setCoordinates(new Coordinates(Float.parseFloat(createX()), Float.parseFloat(createY())));
@@ -58,6 +77,16 @@ public class Inserting implements Checking {
         ticket.setType(TicketType.valueOf(createType().toUpperCase()));
         ticket.setVenue(new Venue(Integer.parseInt(createVenueId()),  createVenueName(), Long.parseLong(createVenueCapacity()), VenueType.valueOf(createVenueType().toUpperCase())));
     }
+
+    /**
+     * Creates a new Ticket object based on user input.
+     * <p>
+     * The method requests data from the user to create a new Ticket object,
+     * uses the entered data to initialize the fields of the Ticket object and returns
+     * created Ticket object.
+     *
+     * @return A new Ticket object created from the input.
+     */
     public Ticket createTicket() {
         createKey();
         createName();
@@ -73,7 +102,10 @@ public class Inserting implements Checking {
         createVenueType();
         return toBuildTicket(output);
     }
-
+    /**
+     * Creates a unique key for the Ticket object based on user input.
+     * @return The unique key for the Ticket object
+     */
     public String createKey() {
         Integer keyValue = null;
         while (true) {
@@ -102,6 +134,11 @@ public class Inserting implements Checking {
         return output[0];
     }
 
+
+    /**
+     * Creates name for the Ticket object based on user input.
+     * @return The name for the Ticket object
+     */
     public String createName() {
         while (true) {
             System.out.println("Введите name");
@@ -116,6 +153,11 @@ public class Inserting implements Checking {
         }
         return output[1];
     }
+
+    /**
+     * Creates x coordinate for the Ticket object based on user input.
+     * @return The x coordinate for the Ticket object
+     */
     public String createX() {
         while (true) {
             try {
@@ -131,6 +173,11 @@ public class Inserting implements Checking {
         }
         return  output[2];
     }
+
+    /**
+     * Creates y coordinate for the Ticket object based on user input.
+     * @return The y coordinate for the Ticket object
+     */
     public String createY() {
         while (true) {
             try {
@@ -149,6 +196,11 @@ public class Inserting implements Checking {
         }
         return  output[3];
     }
+
+    /**
+     * Creates price for the Ticket object based on user input.
+     * @return The price for the Ticket object
+     */
     public String createPrice() {
         while (true) {
             try {
@@ -167,6 +219,11 @@ public class Inserting implements Checking {
         }
         return  output[4];
     }
+
+    /**
+     * Creates discount for the Ticket object based on user input.
+     * @return The discount for the Ticket object
+     */
     public String createDiscount() {
         while (true) {
             try {
@@ -185,6 +242,11 @@ public class Inserting implements Checking {
         }
         return  output[5];
     }
+
+    /**
+     * Creates refundable for the Ticket object based on user input.
+     * @return The refundable for the Ticket object
+     */
     public String createRefundable() {
         while (true) {
             System.out.println("Введите refundable (true/false):");
@@ -202,6 +264,11 @@ public class Inserting implements Checking {
         }
         return  output[6];
     }
+
+    /**
+     * Creates type for the Ticket object based on user input.
+     * @return The type for the Ticket object
+     */
     public String createType() {
         String out = null;
         System.out.println("Выберите тип билета: ");
@@ -231,6 +298,11 @@ public class Inserting implements Checking {
         output[7] = out;
         return  output[7];
     }
+
+    /**
+     * Creates venue`s id for the Ticket object based on user input.
+     * @return The venue`s id for the Ticket object
+     */
     public String createVenueId() {
 
         Random random = new Random();
@@ -245,6 +317,11 @@ public class Inserting implements Checking {
         }
         return  output[8];
     }
+
+    /**
+     * Creates venue`s name for the Ticket object based on user input.
+     * @return The venue`s name for the Ticket object
+     */
     public String createVenueName() {
 
         while (true) {
@@ -259,6 +336,11 @@ public class Inserting implements Checking {
         }
         return  output[9];
     }
+
+    /**
+     * Creates venue`s capacity for the Ticket object based on user input.
+     * @return The venue`s capacity for the Ticket object
+     */
     public String createVenueCapacity() {
         while (true) {
             try {
@@ -277,6 +359,11 @@ public class Inserting implements Checking {
         }
         return  output[10];
     }
+
+    /**
+     * Creates venue`s type for the Ticket object based on user input.
+     * @return The venue`s type for the Ticket object
+     */
     public String createVenueType() {
         boolean check2 = true;
         while (check2) {

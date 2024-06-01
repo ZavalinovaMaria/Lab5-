@@ -1,0 +1,344 @@
+@startuml
+class Command.RemoveLowerCommand {
+~ CommandCatalog commandCatalog
++ <<Create>> RemoveLowerCommand(CommandCatalog)
++ void execute()
++ String description()
++ String toString()
+}
+class Command.RemoveLowerKeyCommand {
+~ CommandCatalog commandCatalog
++ <<Create>> RemoveLowerKeyCommand(CommandCatalog)
++ void execute()
++ String description()
++ String toString()
+}
+class Command.SaveCommand {
+~ CommandCatalog commandCatalog
++ <<Create>> SaveCommand(CommandCatalog)
++ void execute()
++ String description()
++ String toString()
+}
+enum subjects.enams.TicketType {
++  VIP
++  USUAL
++  BUTGETARY
++  CHEAP
++ String name
+~ <<Create>> TicketType(String)
++ String toString()
+}
+class subjects.Venue {
+- Integer id
+- String name
+- Long capacity
+- VenueType type
++ <<Create>> Venue(Integer,String,Long,VenueType)
++ <<Create>> Venue()
++ String getName()
++ void setName(String)
++ VenueType getType()
++ Long getCapacity()
++ int getId()
++ void setId(Integer)
++ void setCapacity(Long)
++ void setType(VenueType)
++ String toString()
+}
+class Command.InfoCommand {
+~ CommandCatalog commandCatalog
++ <<Create>> InfoCommand(CommandCatalog)
++ void execute()
++ String description()
++ String toString()
+}
+class exceptions.NullValueException {
++ <<Create>> NullValueException(String,Throwable)
+}
+class exceptions.NotExistingValueException {
++ <<Create>> NotExistingValueException(String)
+}
+class Command.ExecuteScriptCommand {
+~ CommandCatalog commandCatalog
++ <<Create>> ExecuteScriptCommand(CommandCatalog)
++ void execute()
++ String description()
++ String toString()
+}
+class Command.FilterContainsNameCommand {
+~ CommandCatalog commandCatalog
++ <<Create>> FilterContainsNameCommand(CommandCatalog)
++ void execute()
++ String description()
++ String toString()
+}
+class console.TicketCollection {
+- Hashtable<Integer,Ticket> tickets
+- Date initializationDate
+- String type
+- int countOfElements
+- String internalFileType
++ <<Create>> TicketCollection(Hashtable<Integer,Ticket>)
++ Hashtable<Integer,Ticket> getCollection()
++ void updateData()
++ String toString()
++ String getType()
++ int getCountOfElements()
++ void deleteKey(Integer)
+}
+class Command.PrintFieldDescendingDiscountCommand {
+~ CommandCatalog commandCatalog
++ <<Create>> PrintFieldDescendingDiscountCommand(CommandCatalog)
++ void execute()
++ String description()
++ String toString()
+}
+class Command.ExitCommand {
+~ CommandCatalog commandCatalog
++ <<Create>> ExitCommand(CommandCatalog)
++ void execute()
++ String description()
++ String toString()
+}
+class Command.ClearCommand {
+~ CommandCatalog commandCatalog
++ <<Create>> ClearCommand(CommandCatalog)
++ void execute()
++ String description()
++ String toString()
+}
+class console.Inserting {
+~ Scanner scanner
+~ String[] output
++ Ticket toBuildTicket(String[])
++ void toBuildUpdationTicket(Ticket,String[])
++ void toUpdateTicket(Ticket)
++ Ticket createTicket()
++ String createKey()
++ String createName()
++ String createX()
++ String createY()
++ String createPrice()
++ String createDiscount()
++ String createRefundable()
++ String createType()
++ String createVenueId()
++ String createVenueName()
++ String createVenueCapacity()
++ String createVenueType()
+}
+class console.ScriptManager {
+- File script
+- Map<String,Command> commands
+- CommandCatalog commandCatalog
++ <<Create>> ScriptManager(File,Map<String,Command>,CommandCatalog)
++ void executeScript()
+- String[] scriptToTokens()
+- {static} String[] getStrings(char[])
+}
+class subjects.Coordinates {
+- float x
+- Float y
++ <<Create>> Coordinates(float,Float)
++ float getX()
++ float getY()
++ void setX(long)
++ void setY(float)
++ String toString()
+}
+class fileWork.FileReader {
+~ StringBuilder jsonContent
++ Hashtable<Integer,Ticket> read(String)
+}
+class Command.HelpCommand {
+~ CommandCatalog commandCatalog
++ <<Create>> HelpCommand(CommandCatalog)
++ void execute()
++ String description()
++ String toString()
+}
+class console.CommandCatalog {
+- FileReader reader
+- Inserting insert
+- Writer writer
+- TicketCollection collection
+- Set<String> scriptHistory
+- List<String> commandHistory
+- String[] compositeCommand
+- boolean isScriptWorking
+- String[] tokens
++ <<Create>> CommandCatalog(TicketCollection,FileReader,Writer,Inserting,Map<String,Command>)
++ void addToHistory(String)
++ void setTokens(String[])
++ void clearCompositeCommand()
++ void setCompositeCommand(String[])
++ void info()
++ void help()
++ void show()
++ void exit()
++ void clear()
++ void history()
++ void executeScript()
++ void printFieldDescendingDiscount()
++ void removeLowerKey()
++ void removeLower()
++ void save()
++ void insert()
++ void removeKey()
++ void updateId()
++ void sumOfPrice()
++ void filterContainsName()
+}
+class Command.SumOfPriceCommand {
+~ CommandCatalog commandCatalog
++ <<Create>> SumOfPriceCommand(CommandCatalog)
++ void execute()
++ String description()
++ String toString()
+}
+enum subjects.enams.VenueType {
++  BAR
++  CINEMA
++  MALL
++  STADIUM
++ String name
+~ <<Create>> VenueType(String)
++ String toString()
+}
+class subjects.Ticket {
+- Integer id
+- {static} int lastId
+~ String name
+- Coordinates coordinates
+- java.time.ZonedDateTime creationDate
+- float price
+- double discount
+- Boolean refundable
+- TicketType type
+- Venue venue
++ <<Create>> Ticket(Integer,String,Coordinates,ZonedDateTime,float,double,Boolean,TicketType,Venue)
++ <<Create>> Ticket()
++ String getName()
++ java.time.ZonedDateTime getCreationDate()
++ void setName(String)
++ Integer getId()
++ void setId(Integer)
++ Coordinates getCoordinates()
++ void setCoordinates(Coordinates)
++ float getPrice()
++ void setPrice(float)
++ double getDiscount()
++ void setDiscount(double)
++ TicketType getType()
++ Venue getVenue()
++ Boolean getRefundable()
++ void setRefundable(Boolean)
++ void setCreationDate(ZonedDateTime)
++ void setVenue(Venue)
++ void setType(TicketType)
++ int compareTo(Ticket)
++ String toString()
+}
+class Command.HistoryCommand {
+~ CommandCatalog commandCatalog
++ <<Create>> HistoryCommand(CommandCatalog)
++ void execute()
++ String description()
++ String toString()
+}
+interface Command.Command {
+~ void execute()
+~ String description()
+}
+class console.Console {
+~ {static} Map<String,Command> commands
++ {static} ArrayList<Integer> keyStoragee
++ {static} ArrayList<Integer> idVenueStorage
++ {static} String firstFilePath
++ void toStart()
+}
+class fileWork.Writer {
+~ String filePath
++ <<Create>> Writer()
++ JSONArray createJsonArray(TicketCollection)
++ void writeToFile(TicketCollection,String)
+}
+class Command.InsertCommand {
+~ CommandCatalog commandCatalog
++ <<Create>> InsertCommand(CommandCatalog)
++ void execute()
++ String description()
++ String toString()
+}
+class Main {
++ {static} void main(String[])
+}
+class exceptions.NotUniqueValueException {
++ <<Create>> NotUniqueValueException(String)
+}
+class fileWork.TicketFactory {
++ {static} Hashtable<Integer,Ticket> createTicket(JSONArray)
+}
+class Command.RemoveKeyCommand {
+~ CommandCatalog commandCatalog
++ <<Create>> RemoveKeyCommand(CommandCatalog)
++ void execute()
++ String description()
++ String toString()
+}
+class subjects.Сomporators.ComparatorPrice {
++ int compare(Ticket,Ticket)
+}
+interface console.Checking {
+~ boolean checkingUniqueness(Integer)
+~ boolean checkingIdUniqueness(Integer)
+~ void addNewKey(Integer)
+~ void addNewVenueId(Integer)
+~ void checkExistence(Integer)
+~ Boolean checkingExistence(Integer)
+}
+class Command.ShowCommand {
+~ CommandCatalog commandCatalog
++ <<Create>> ShowCommand(CommandCatalog)
++ void execute()
++ String description()
++ String toString()
+}
+class Command.UpdateIdCommand {
+~ CommandCatalog commandCatalog
++ <<Create>> UpdateIdCommand(CommandCatalog)
++ void execute()
++ String description()
++ String toString()
+}
+class subjects.Сomporators.ComparatorDiscount {
++ int compare(Ticket,Ticket)
+}
+
+
+Command.Command <|.. Command.RemoveLowerCommand
+Command.Command <|.. Command.RemoveLowerKeyCommand
+Command.Command <|.. Command.SaveCommand
+Command.Command <|.. Command.InfoCommand
+exceptions.Exception <|-- exceptions.NullValueException
+exceptions.Exception <|-- exceptions.NotExistingValueException
+Command.Command <|.. Command.ExecuteScriptCommand
+Command.Command <|.. Command.FilterContainsNameCommand
+console.Checking <|.. console.TicketCollection
+Command.Command <|.. Command.PrintFieldDescendingDiscountCommand
+Command.Command <|.. Command.ExitCommand
+Command.Command <|.. Command.ClearCommand
+console.Checking <|.. console.Inserting
+Command.Command <|.. Command.HelpCommand
+Command.Command <|.. Command.SumOfPriceCommand
+subjects.Comparable <|.. subjects.Ticket
+Command.Command <|.. Command.HistoryCommand
+Command.Command <|.. Command.InsertCommand
+exceptions.Exception <|-- exceptions.NotUniqueValueException
+Command.Command <|.. Command.RemoveKeyCommand
+java.util.Comparator <|.. subjects.Сomporators.ComparatorPrice
+Command.Command <|.. Command.ShowCommand
+Command.Command <|.. Command.UpdateIdCommand
+java.util.Comparator <|.. subjects.Сomporators.ComparatorDiscount
+@enduml

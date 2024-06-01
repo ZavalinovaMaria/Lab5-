@@ -54,6 +54,11 @@ public class ScriptManager {
         }
     }
 
+    /**
+     * A method that reads a script file and converts it to a char array and return result of the {@link ScriptManager#getStrings(char[])}
+     *
+     * @return Command array
+     */
     private String[] scriptToTokens() {
         char[] inputChar = new char[2048];
         try (InputStreamReader reader = new FileReader(script)) {
@@ -68,6 +73,13 @@ public class ScriptManager {
             return new String[0];
         }
     }
+
+    /**
+     * Private method that turns an array of characters into an array of strings with individual commands
+     *
+     * @param inputChar An array of characters read from a file with a script method{@link ScriptManager#scriptToTokens()}
+     * @return Command array
+     */
 
     private static String[] getStrings(char[] inputChar) {
         List<String> tokens = new ArrayList<>();

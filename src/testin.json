@@ -23,12 +23,12 @@
     "name": "FataMorgana",
     "coordinates": {
       "x": 14,
-      "y": 45
+      "y": 3
     },
     "creationDate": "2024-04-26T10:15:30Z",
     "price": 590,
     "discount": 1,
-    "refundable": "false",
+    "refundable": "dd",
     "type": "VIP",
     "venue": {
       "id": 239,

@@ -1,9 +1,10 @@
 package subjects.enams;
 
+/**
+ * Enum representing the ticket`s type.
+ */
 public enum TicketType {
-    /**
-     * Enum representing the ticket`s type.
-     */
+
     VIP("VIP"),
     USUAL("USUAL"),
     BUTGETARY("BUTGETARY"),

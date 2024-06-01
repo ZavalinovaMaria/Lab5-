@@ -3,10 +3,11 @@ package subjects;
 import subjects.enams.TicketType;
 import java.time.ZonedDateTime;
 
+/**
+ * A class representing ticket.
+ */
 public  class Ticket implements Comparable<Ticket> {
-    /**
-     * A class representing ticket.
-     */
+
     private Integer id; //Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
     private static int lastId = 0;
     String name; //Поле не может быть null, Строка не может быть пустой
@@ -17,6 +18,7 @@ public  class Ticket implements Comparable<Ticket> {
     private Boolean refundable;
     private TicketType type; //Поле не может быть null
     private Venue venue; //Поле не может быть null
+    private User user;
 
     /**
      *Creates a new ticket instance.
@@ -32,8 +34,9 @@ public  class Ticket implements Comparable<Ticket> {
      * @param venue    ticket`s venue
      */
 
-    public Ticket(Integer id,String name, Coordinates coordinates, ZonedDateTime creationDate, float price, double discount,Boolean refundable, TicketType type, Venue venue) {
+    public Ticket(Integer id,User user,String name, Coordinates coordinates, ZonedDateTime creationDate, float price, double discount,Boolean refundable, TicketType type, Venue venue) {
         this.id = id;
+        this.user = user;
         this.name = name;
         this.coordinates = coordinates;
         this.creationDate = creationDate;
@@ -44,6 +47,14 @@ public  class Ticket implements Comparable<Ticket> {
         this.venue = venue;
     }
     public Ticket(){}
+    public User getUser(){
+        return user;
+    }
+    public void setUser(User user){
+        this.user = user;
+    }
+
+
 
     public String getName() {
         return name;}
@@ -98,6 +109,20 @@ public  class Ticket implements Comparable<Ticket> {
     public void setType(TicketType type) {
         this.type = type;
     }
+
+   public void setCharacteristic(Integer id,User user,String name, Coordinates coordinates, ZonedDateTime creationDate, float price, double discount,Boolean refundable, TicketType type, Venue venue){
+        this.setId(id);
+        this.setUser(user);
+        this.setName(name);
+        this.setCoordinates(coordinates);
+        this.setCreationDate(creationDate);
+        this.setPrice(price);
+        this.setDiscount(discount);
+        this.setRefundable(refundable);
+        this.setType(type);
+        this.setVenue(venue);
+   }
+
     @Override
     public int compareTo(Ticket ticket ){
         return this.id.compareTo(ticket.id);}
